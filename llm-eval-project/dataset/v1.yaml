@@ -1,0 +1,450 @@
+- id: email_001
+  input: |
+    Hi,
+    I was charged twice for my monthly subscription. Please refund the extra payment.
+  expected:
+    category: billing
+    summary: Customer reports a duplicate subscription charge and requests a refund.
+  expected_difficulty: easy
+  notes: Duplicate charge
+
+- id: email_002
+  input: |
+    My card was charged yesterday but my subscription is still inactive.
+  expected:
+    category: billing
+    summary: Customer was charged but subscription is inactive.
+  expected_difficulty: medium
+  notes: Payment succeeded but access missing
+
+- id: email_003
+  input: |
+    Please cancel my subscription and stop future billing.
+  expected:
+    category: billing
+    summary: Customer wants to cancel their subscription.
+  expected_difficulty: easy
+  notes: Cancellation request
+
+- id: email_004
+  input: |
+    My invoice shows a charge I don't recognize.
+  expected:
+    category: billing
+    summary: Customer asks about an unexpected invoice amount.
+  expected_difficulty: medium
+  notes: Invoice question
+
+- id: email_005
+  input: |
+    I accidentally purchased the annual plan. I'd like a refund.
+  expected:
+    category: billing
+    summary: Customer requests a refund for an accidental purchase.
+  expected_difficulty: easy
+  notes: Refund
+
+- id: email_006
+  input: |
+    My payment keeps failing although my card works.
+  expected:
+    category: billing
+    summary: Customer asks why payment failed.
+  expected_difficulty: easy
+  notes: Payment failure
+
+- id: email_007
+  input: |
+    Why was GST added to my invoice?
+  expected:
+    category: billing
+    summary: Customer asks about tax charged.
+  expected_difficulty: medium
+  notes: Tax query
+
+- id: email_008
+  input: |
+    I selected the monthly plan but was billed the yearly price.
+  expected:
+    category: billing
+    summary: Customer reports incorrect plan pricing.
+  expected_difficulty: medium
+  notes: Wrong price
+
+- id: email_009
+  input: |
+    Can you send me last month's invoice?
+  expected:
+    category: billing
+    summary: Customer requests a copy of an invoice.
+  expected_difficulty: easy
+  notes: Invoice copy
+
+- id: email_010
+  input: |
+    My subscription renewed automatically. I wasn't expecting it.
+  expected:
+    category: billing
+    summary: Customer reports renewal without notice.
+  expected_difficulty: hard
+  notes: Renewal complaint
+
+- id: email_011
+  input: |
+    My discount code wasn't applied during checkout.
+  expected:
+    category: billing
+    summary: Customer reports coupon not applied.
+  expected_difficulty: medium
+  notes: Discount issue
+
+- id: email_012
+  input: |
+    When will my refund reach my bank account?
+  expected:
+    category: billing
+    summary: Customer asks about refund status.
+  expected_difficulty: easy
+  notes: Refund status
+
+- id: email_013
+  input: |
+    I forgot my password and can't log in.
+  expected:
+    category: account
+    summary: Customer cannot log in after forgetting their password.
+  expected_difficulty: easy
+  notes: Password reset
+
+- id: email_014
+  input: |
+    I changed my phone number and can't receive the OTP.
+  expected:
+    category: account
+    summary: Customer cannot receive a verification code.
+  expected_difficulty: medium
+  notes: 2FA
+
+- id: email_015
+  input: |
+    Please permanently delete my account.
+  expected:
+    category: account
+    summary: Customer requests account deletion.
+  expected_difficulty: easy
+  notes: Delete account
+
+- id: email_016
+  input: |
+    How can I change the email linked to my account?
+  expected:
+    category: account
+    summary: Customer wants to change their email address.
+  expected_difficulty: easy
+  notes: Email update
+
+- id: email_017
+  input: |
+    My account says it has been locked.
+  expected:
+    category: account
+    summary: Customer account is locked.
+  expected_difficulty: medium
+  notes: Locked account
+
+- id: email_018
+  input: |
+    I never received the verification email.
+  expected:
+    category: account
+    summary: Customer cannot verify their email.
+  expected_difficulty: medium
+  notes: Verification
+
+- id: email_019
+  input: |
+    I paid yesterday but still can't access premium features.
+  expected:
+    category: account
+    summary: Customer cannot access premium after payment.
+  expected_difficulty: hard
+  notes: Ambiguous billing/account
+
+- id: email_020
+  input: |
+    cant logn pls hlp
+  expected:
+    category: account
+    summary: Customer reports login issue with typos.
+  expected_difficulty: hard
+  notes: Typos
+
+- id: email_021
+  input: |
+    Mi cuenta no funciona. I cannot login.
+  expected:
+    category: account
+    summary: Customer cannot access account in mixed language.
+  expected_difficulty: hard
+  notes: Mixed language
+
+- id: email_022
+  input: |
+    Can I change my username?
+  expected:
+    category: account
+    summary: Customer wants username changed.
+  expected_difficulty: easy
+  notes: Username
+
+- id: email_023
+  input: |
+    I forgot the answers to my security questions.
+  expected:
+    category: account
+    summary: Customer forgot security answers.
+  expected_difficulty: medium
+  notes: Recovery
+
+- id: email_024
+  input: |
+    The password reset link has expired every time.
+  expected:
+    category: account
+    summary: Customer cannot reset password link.
+  expected_difficulty: medium
+  notes: Reset link
+
+- id: email_025
+  input: |
+    I accidentally created two accounts. Can you merge them?
+  expected:
+    category: account
+    summary: Customer asks to merge two accounts.
+  expected_difficulty: hard
+  notes: Merge
+
+- id: email_026
+  input: |
+    The application crashes every time I click Save.
+  expected:
+    category: technical
+    summary: Application crashes when saving.
+  expected_difficulty: easy
+  notes: Crash
+
+- id: email_027
+  input: |
+    The dashboard keeps loading forever.
+  expected:
+    category: technical
+    summary: Dashboard never loads.
+  expected_difficulty: easy
+  notes: Loading
+
+- id: email_028
+  input: |
+    The mobile app freezes whenever I upload a photo.
+  expected:
+    category: technical
+    summary: Mobile app freezes during upload.
+  expected_difficulty: easy
+  notes: Freeze
+
+- id: email_029
+  input: |
+    The login page shows Internal Server Error.
+  expected:
+    category: technical
+    summary: Internal server error on login.
+  expected_difficulty: medium
+  notes: 500 error
+
+- id: email_030
+  input: |
+    Our integration receives HTTP 403.
+  expected:
+    category: technical
+    summary: API returns 403.
+  expected_difficulty: medium
+  notes: API
+
+- id: email_031
+  input: |
+    I'm not receiving push notifications.
+  expected:
+    category: technical
+    summary: Notifications not working.
+  expected_difficulty: medium
+  notes: Notifications
+
+- id: email_032
+  input: |
+    The site works in Chrome but not Firefox.
+  expected:
+    category: technical
+    summary: Feature works in Chrome not Firefox.
+  expected_difficulty: medium
+  notes: Browser
+
+- id: email_033
+  input: |
+    I can't upload PDF files.
+  expected:
+    category: technical
+    summary: File upload fails.
+  expected_difficulty: easy
+  notes: Upload
+
+- id: email_034
+  input: |
+    The application has become extremely slow today.
+  expected:
+    category: technical
+    summary: Slow application.
+  expected_difficulty: medium
+  notes: Performance
+
+- id: email_035
+  input: |
+    Nothing happens when I click Export.
+  expected:
+    category: technical
+    summary: Export button does nothing.
+  expected_difficulty: medium
+  notes: Export
+
+- id: email_036
+  input: |
+    The search page always shows blank results.
+  expected:
+    category: technical
+    summary: Search returns blank.
+  expected_difficulty: medium
+  notes: Search
+
+- id: email_037
+  input: |
+    Dark mode text is unreadable.
+  expected:
+    category: technical
+    summary: Dark mode broken.
+  expected_difficulty: easy
+  notes: UI
+
+- id: email_038
+  input: |
+    After today's update the app crashes immediately.
+  expected:
+    category: technical
+    summary: App crashes after update.
+  expected_difficulty: hard
+  notes: Regression
+
+- id: email_039
+  input: |
+    What are your business hours?
+  expected:
+    category: general
+    summary: Customer asks business hours.
+  expected_difficulty: easy
+  notes: Hours
+
+- id: email_040
+  input: |
+    Do you offer student discounts?
+  expected:
+    category: general
+    summary: Customer asks about student discounts.
+  expected_difficulty: easy
+  notes: Discount
+
+- id: email_041
+  input: |
+    Where is your company located?
+  expected:
+    category: general
+    summary: Customer asks company location.
+  expected_difficulty: easy
+  notes: Location
+
+- id: email_042
+  input: |
+    Thank you! Everything works now.
+  expected:
+    category: general
+    summary: Customer thanks support.
+  expected_difficulty: easy
+  notes: Positive
+
+- id: email_043
+  input: |
+    Can I schedule a product demo?
+  expected:
+    category: general
+    summary: Customer requests product demo.
+  expected_difficulty: easy
+  notes: Sales
+
+- id: email_044
+  input: |
+    Where can I find your API documentation?
+  expected:
+    category: general
+    summary: Customer asks for documentation.
+  expected_difficulty: easy
+  notes: Docs
+
+- id: email_045
+  input: |
+    Are you planning to add dark mode?
+  expected:
+    category: general
+    summary: Customer asks roadmap.
+  expected_difficulty: medium
+  notes: Roadmap
+
+- id: email_046
+  input: |
+    We'd like to discuss a partnership.
+  expected:
+    category: general
+    summary: Customer wants partnership.
+  expected_difficulty: medium
+  notes: Partnership
+
+- id: email_047
+  input: |
+    I love the new interface.
+  expected:
+    category: general
+    summary: Customer gives feedback.
+  expected_difficulty: easy
+  notes: Feedback
+
+- id: email_048
+  input: |
+    What does the enterprise plan cost?
+  expected:
+    category: general
+    summary: Customer asks pricing.
+  expected_difficulty: easy
+  notes: Pricing
+
+- id: email_049
+  input: |
+    Help!
+  expected:
+    category: general
+    summary: Customer says Help only.
+  expected_difficulty: hard
+  notes: Very short
+
+- id: email_050
+  input: |
+    Fantastic, another Monday. Anyway, where are your offices?
+  expected:
+    category: general
+    summary: Customer uses sarcasm unrelated to bug.
+  expected_difficulty: hard
+  notes: Sarcasm

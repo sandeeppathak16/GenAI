@@ -1,5 +1,5 @@
 [project]
-name = "chatbot"
+name = "llm-eval-project"
 version = "0.1.0"
 description = ""
 authors = [

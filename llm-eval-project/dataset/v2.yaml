@@ -1,0 +1,269 @@
+- id: email_021
+  input: |
+    Mi cuenta no funciona. I cannot login.
+  expected:
+    category: account
+    summary: Customer cannot access account in mixed language.
+  expected_difficulty: hard
+  notes: Mixed language
+
+- id: email_022
+  input: |
+    Can I change my username?
+  expected:
+    category: account
+    summary: Customer wants username changed.
+  expected_difficulty: easy
+  notes: Username
+
+- id: email_023
+  input: |
+    I forgot the answers to my security questions.
+  expected:
+    category: account
+    summary: Customer forgot security answers.
+  expected_difficulty: medium
+  notes: Recovery
+
+- id: email_024
+  input: |
+    The password reset link has expired every time.
+  expected:
+    category: account
+    summary: Customer cannot reset password link.
+  expected_difficulty: medium
+  notes: Reset link
+
+- id: email_025
+  input: |
+    I accidentally created two accounts. Can you merge them?
+  expected:
+    category: account
+    summary: Customer asks to merge two accounts.
+  expected_difficulty: hard
+  notes: Merge
+
+- id: email_026
+  input: |
+    The application crashes every time I click Save.
+  expected:
+    category: technical
+    summary: Application crashes when saving.
+  expected_difficulty: easy
+  notes: Crash
+
+- id: email_027
+  input: |
+    The dashboard keeps loading forever.
+  expected:
+    category: technical
+    summary: Dashboard never loads.
+  expected_difficulty: easy
+  notes: Loading
+
+- id: email_028
+  input: |
+    The mobile app freezes whenever I upload a photo.
+  expected:
+    category: technical
+    summary: Mobile app freezes during upload.
+  expected_difficulty: easy
+  notes: Freeze
+
+- id: email_029
+  input: |
+    The login page shows Internal Server Error.
+  expected:
+    category: technical
+    summary: Internal server error on login.
+  expected_difficulty: medium
+  notes: 500 error
+
+- id: email_030
+  input: |
+    Our integration receives HTTP 403.
+  expected:
+    category: technical
+    summary: API returns 403.
+  expected_difficulty: medium
+  notes: API
+
+- id: email_031
+  input: |
+    I'm not receiving push notifications.
+  expected:
+    category: technical
+    summary: Notifications not working.
+  expected_difficulty: medium
+  notes: Notifications
+
+- id: email_032
+  input: |
+    The site works in Chrome but not Firefox.
+  expected:
+    category: technical
+    summary: Feature works in Chrome not Firefox.
+  expected_difficulty: medium
+  notes: Browser
+
+- id: email_033
+  input: |
+    I can't upload PDF files.
+  expected:
+    category: technical
+    summary: File upload fails.
+  expected_difficulty: easy
+  notes: Upload
+
+- id: email_034
+  input: |
+    The application has become extremely slow today.
+  expected:
+    category: technical
+    summary: Slow application.
+  expected_difficulty: medium
+  notes: Performance
+
+- id: email_035
+  input: |
+    Nothing happens when I click Export.
+  expected:
+    category: technical
+    summary: Export button does nothing.
+  expected_difficulty: medium
+  notes: Export
+
+- id: email_036
+  input: |
+    The search page always shows blank results.
+  expected:
+    category: technical
+    summary: Search returns blank.
+  expected_difficulty: medium
+  notes: Search
+
+- id: email_037
+  input: |
+    Dark mode text is unreadable.
+  expected:
+    category: technical
+    summary: Dark mode broken.
+  expected_difficulty: easy
+  notes: UI
+
+- id: email_038
+  input: |
+    After today's update the app crashes immediately.
+  expected:
+    category: technical
+    summary: App crashes after update.
+  expected_difficulty: hard
+  notes: Regression
+
+- id: email_039
+  input: |
+    What are your business hours?
+  expected:
+    category: general
+    summary: Customer asks business hours.
+  expected_difficulty: easy
+  notes: Hours
+
+- id: email_040
+  input: |
+    Do you offer student discounts?
+  expected:
+    category: general
+    summary: Customer asks about student discounts.
+  expected_difficulty: easy
+  notes: Discount
+
+- id: email_041
+  input: |
+    Where is your company located?
+  expected:
+    category: general
+    summary: Customer asks company location.
+  expected_difficulty: easy
+  notes: Location
+
+- id: email_042
+  input: |
+    Thank you! Everything works now.
+  expected:
+    category: general
+    summary: Customer thanks support.
+  expected_difficulty: easy
+  notes: Positive
+
+- id: email_043
+  input: |
+    Can I schedule a product demo?
+  expected:
+    category: general
+    summary: Customer requests product demo.
+  expected_difficulty: easy
+  notes: Sales
+
+- id: email_044
+  input: |
+    Where can I find your API documentation?
+  expected:
+    category: general
+    summary: Customer asks for documentation.
+  expected_difficulty: easy
+  notes: Docs
+
+- id: email_045
+  input: |
+    Are you planning to add dark mode?
+  expected:
+    category: general
+    summary: Customer asks roadmap.
+  expected_difficulty: medium
+  notes: Roadmap
+
+- id: email_046
+  input: |
+    We'd like to discuss a partnership.
+  expected:
+    category: general
+    summary: Customer wants partnership.
+  expected_difficulty: medium
+  notes: Partnership
+
+- id: email_047
+  input: |
+    I love the new interface.
+  expected:
+    category: general
+    summary: Customer gives feedback.
+  expected_difficulty: easy
+  notes: Feedback
+
+- id: email_048
+  input: |
+    What does the enterprise plan cost?
+  expected:
+    category: general
+    summary: Customer asks pricing.
+  expected_difficulty: easy
+  notes: Pricing
+
+- id: email_049
+  input: |
+    Help!
+  expected:
+    category: general
+    summary: Customer says Help only.
+  expected_difficulty: hard
+  notes: Very short
+
+- id: email_050
+  input: |
+    Fantastic, another Monday. Anyway, where are your offices?
+  expected:
+    category: general
+    summary: Customer uses sarcasm unrelated to bug.
+  expected_difficulty: hard
+  notes: Sarcasm

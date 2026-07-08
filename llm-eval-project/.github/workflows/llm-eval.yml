@@ -1,0 +1,247 @@
+name: LLM Eval — Prompt Regression Check
+
+on:
+  pull_request:
+    paths:
+      - "prompts/**"
+
+concurrency:
+  group: llm-eval-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  eval:
+    name: Run Eval Pipeline
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore eval baseline (latest.json)
+        uses: actions/cache/restore@v4
+        with:
+          path: reports/latest.json
+          key: eval-baseline-${{ github.base_ref }}
+        continue-on-error: true
+
+      - name: Install Poetry
+        run: pip install --no-cache-dir poetry==1.8.5
+
+      - name: Install project dependencies
+        run: poetry install --no-root --only main
+
+      - name: Run eval pipeline
+        id: run_eval
+        env:
+          GROQ_API_KEY:            ${{ secrets.GROQ_API_KEY }}
+          SLACK_WEBHOOK_URL:       ${{ secrets.SLACK_WEBHOOK_URL }}
+          EVAL_PROVIDER:           ${{ vars.EVAL_PROVIDER       || 'groq' }}
+          EVAL_MODEL:              ${{ vars.EVAL_MODEL          || 'openai/gpt-oss-120b' }}
+          EVAL_DATASET_VERSION:    ${{ vars.EVAL_DATASET_VERSION || 'v1' }}
+          EVAL_PROMPT_VERSION:     ${{ vars.EVAL_PROMPT_VERSION  || 'v1' }}
+          EVAL_CRITICAL_THRESHOLD: ${{ vars.EVAL_CRITICAL_THRESHOLD || '0.08' }}
+          EVAL_WARNING_THRESHOLD:  ${{ vars.EVAL_WARNING_THRESHOLD  || '0.03' }}
+        run: poetry run python main.py
+
+      - name: Parse eval results
+        id: parse
+        if: always()
+        env:
+          EVAL_CRITICAL_THRESHOLD: ${{ vars.EVAL_CRITICAL_THRESHOLD || '0.08' }}
+          EVAL_WARNING_THRESHOLD:  ${{ vars.EVAL_WARNING_THRESHOLD  || '0.03' }}
+        run: |
+          python - <<'PYEOF'
+          import json, os, sys
+          from pathlib import Path
+
+          report_path = Path("reports/latest.json")
+          critical_thr = float(os.environ.get("EVAL_CRITICAL_THRESHOLD", "0.08"))
+          warning_thr  = float(os.environ.get("EVAL_WARNING_THRESHOLD",  "0.03"))
+
+          if not report_path.exists():
+              print("No report found — eval likely failed before writing output.")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                  f.write("status=ERROR\n")
+                  f.write("accuracy=N/A\n")
+                  f.write("accuracy_delta=N/A\n")
+                  f.write("regression_count=N/A\n")
+                  f.write("improvement_count=N/A\n")
+                  f.write("passed=N/A\n")
+                  f.write("total=N/A\n")
+                  f.write("has_diff=false\n")
+              sys.exit(0)
+
+          data = json.loads(report_path.read_text())
+
+          accuracy          = data["accuracy"]
+          passed            = data["passed"]
+          total             = data["total"]
+          failed            = data["failed"]
+          avg_latency       = data["average_latency_ms"]
+          prompt_version    = data["prompt_version"]
+          dataset_version   = data["dataset_version"]
+
+          # Build regression details table (top 10)
+          results = data.get("results", [])
+          regressions = [r for r in results if not r["passed"]]
+          regressions_md = ""
+          if regressions:
+              rows = "\n".join(
+                  f"| `{r['id']}` | {r.get('difficulty','—')} | `{r['expected_category']}` | `{r.get('predicted_category','—')}` |"
+                  for r in regressions[:10]
+              )
+              regressions_md = (
+                  "### ❌ Failed Cases (up to 10)\n\n"
+                  "| ID | Difficulty | Expected | Predicted |\n"
+                  "|---|---|---|---|\n"
+                  + rows
+              )
+
+          # Determine status — requires baseline diff to detect regression
+          # We'll read the diff from the run itself if present (comparison done inside the pipeline)
+          # For the status badge we derive from accuracy alone on first run
+          status = "PASS"
+          accuracy_delta = "N/A"
+          regression_count = len(regressions)
+          improvement_count = 0
+          has_diff = "false"
+
+          # Try to detect previous baseline for delta display
+          history_dir = Path("reports/history")
+          history_files = sorted(history_dir.glob("*.json")) if history_dir.exists() else []
+          if len(history_files) >= 2:
+              prev_data = json.loads(history_files[-2].read_text())
+              prev_accuracy = prev_data["accuracy"]
+              delta = accuracy - prev_accuracy
+              accuracy_delta = f"{delta:+.2%}"
+              has_diff = "true"
+
+              if delta < -critical_thr:
+                  status = "CRITICAL"
+              elif delta < -warning_thr:
+                  status = "WARNING"
+
+          # Write to GITHUB_OUTPUT (multi-line safe via heredoc-style delimiter)
+          output = os.environ["GITHUB_OUTPUT"]
+          with open(output, "a") as f:
+              f.write(f"status={status}\n")
+              f.write(f"accuracy={accuracy:.2%}\n")
+              f.write(f"accuracy_delta={accuracy_delta}\n")
+              f.write(f"regression_count={regression_count}\n")
+              f.write(f"improvement_count={improvement_count}\n")
+              f.write(f"passed={passed}\n")
+              f.write(f"total={total}\n")
+              f.write(f"failed={failed}\n")
+              f.write(f"avg_latency={avg_latency:.2f}ms\n")
+              f.write(f"prompt_version={prompt_version}\n")
+              f.write(f"dataset_version={dataset_version}\n")
+              f.write(f"has_diff={has_diff}\n")
+              # Multi-line output needs heredoc delimiter
+              f.write(f"regressions_md<<DELIM\n{regressions_md}\nDELIM\n")
+          PYEOF
+
+      - name: Post PR comment
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          STATUS:            ${{ steps.parse.outputs.status }}
+          ACCURACY:          ${{ steps.parse.outputs.accuracy }}
+          ACCURACY_DELTA:    ${{ steps.parse.outputs.accuracy_delta }}
+          REGRESSION_COUNT:  ${{ steps.parse.outputs.regression_count }}
+          IMPROVEMENT_COUNT: ${{ steps.parse.outputs.improvement_count }}
+          PASSED:            ${{ steps.parse.outputs.passed }}
+          TOTAL:             ${{ steps.parse.outputs.total }}
+          FAILED:            ${{ steps.parse.outputs.failed }}
+          AVG_LATENCY:       ${{ steps.parse.outputs.avg_latency }}
+          PROMPT_VERSION:    ${{ steps.parse.outputs.prompt_version }}
+          DATASET_VERSION:   ${{ steps.parse.outputs.dataset_version }}
+          HAS_DIFF:          ${{ steps.parse.outputs.has_diff }}
+          REGRESSIONS_MD:    ${{ steps.parse.outputs.regressions_md }}
+        with:
+          script: |
+            const status = process.env.STATUS;
+            const hasDiff = process.env.HAS_DIFF === 'true';
+
+            const badge = {
+              PASS:     '✅ **PASS**',
+              WARNING:  '⚠️ **WARNING**',
+              CRITICAL: '🔴 **CRITICAL — Merge Blocked**',
+              ERROR:    '💥 **ERROR — Eval Failed**',
+            }[status] ?? '❓ Unknown';
+
+            const deltaRow = hasDiff
+              ? `| Accuracy Δ | \`${process.env.ACCURACY_DELTA}\` |\n| Regressions | ${process.env.REGRESSION_COUNT} |\n| Improvements | ${process.env.IMPROVEMENT_COUNT} |`
+              : '| Baseline | _No previous run — first eval_ |';
+
+            const body = [
+              `## 🤖 LLM Eval Report — ${badge}`,
+              '',
+              '| Metric | Value |',
+              '|--------|-------|',
+              `| Status | \`${status}\` |`,
+              `| Accuracy | \`${process.env.ACCURACY}\` |`,
+              deltaRow,
+              `| Passed / Total | ${process.env.PASSED} / ${process.env.TOTAL} |`,
+              `| Failed | ${process.env.FAILED} |`,
+              `| Avg Latency | \`${process.env.AVG_LATENCY}\` |`,
+              `| Prompt Version | \`${process.env.PROMPT_VERSION}\` |`,
+              `| Dataset Version | \`${process.env.DATASET_VERSION}\` |`,
+              '',
+              process.env.REGRESSIONS_MD || '',
+              '',
+              `<sub>Run triggered by commit \`${context.sha.slice(0, 7)}\` · [View full logs](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})</sub>`,
+            ].join('\n');
+
+            const MARKER = '<!-- llm-eval-bot -->';
+            const markedBody = MARKER + '\n' + body;
+
+            // Find existing comment to update (avoid spamming new comments)
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.data.find(c => c.body.startsWith(MARKER));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: markedBody,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: markedBody,
+              });
+            }
+
+      - name: Save eval baseline (latest.json)
+        if: steps.run_eval.outcome == 'success'
+        uses: actions/cache/save@v4
+        with:
+          path: reports/latest.json
+          key: eval-baseline-${{ github.base_ref }}-${{ github.run_id }}
+
+      - name: Fail on critical regression
+        if: steps.parse.outputs.status == 'CRITICAL'
+        run: |
+          echo "::error::Critical regression detected — accuracy dropped by more than the configured threshold."
+          echo "::error::Accuracy delta: ${{ steps.parse.outputs.accuracy_delta }}"
+          echo "::error::Failed cases: ${{ steps.parse.outputs.regression_count }}"
+          exit 1

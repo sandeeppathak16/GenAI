@@ -1,11 +1,19 @@
+import os
+import json
 import asyncio
 import time
 
+from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+from langchain_ollama import ChatOllama
+from langchain_groq import ChatGroq
 
-from models import EvaluationResult, build_output_model
-from prompt_dataset_manager import PromptDatasetManager
+
+from models import (
+    EvaluationResult, build_output_model, 
+    PromptConfig, DatasetItem
+)
+from yaml_manager import YamlManager
 
 
 def chunk(elements, size=20):
@@ -18,35 +26,56 @@ class Evaluator:
     def __init__(
         self,
         prompt_version: str,
-        model_name: str = "Qwen/Qwen3-Coder-Next",
+        provider: str = "ollama",
+        model_name: str = "llama3:latest",
         batch_size: int = 20,
     ):
         self.prompt_version = prompt_version
         self.batch_size = batch_size
+        self.provider = provider.lower()
         self.model_name = model_name
-        self.prompt_config = PromptDatasetManager().get(prompt_version)
+        self.prompt_config = PromptConfig.model_validate(
+            YamlManager("prompts").load(prompt_version)
+        )
         self.llm = self._build_llm()
         self.output_model = build_output_model(
             self.prompt_config.output_schema
         )
-        self.prompt = self._build_prompt()
-        self.chain = (
-            self.prompt
-            | self.llm.with_structured_output(self.output_model)
+        self.parser = JsonOutputParser(
+            pydantic_object=self.output_model
         )
+        self.prompt = self._build_prompt()
+        self.chain = self.prompt | self.llm | self.parser
 
     def _build_llm(self):
-        huggingface = HuggingFaceEndpoint(
-            repo_id=self.model_name,
-        )
+        if self.provider == "ollama":
+            return ChatOllama(
+                model=self.model_name,
+                temperature=0,
+            )
 
-        return ChatHuggingFace(llm=huggingface)
+        if self.provider == "groq":
+            return ChatGroq(
+                model=self.model_name,
+                api_key=os.getenv("GROQ_API_KEY"),
+                temperature=0,
+            )
+
+        raise ValueError(
+            f"Unsupported provider: {self.provider}"
+        )
 
     def _build_prompt(self):
         messages = [
             (
                 "system",
-                self.prompt_config.system_prompt,
+                f"""
+                {self.prompt_config.system_prompt}
+
+                You must return a response matching the schema below.
+
+                {{format_instructions}}
+                """
             )
         ]
 
@@ -58,11 +87,11 @@ class Evaluator:
                 )
             )
             messages.append(
-                (
-                    "ai",
-                    str(example["output"]),
-                )
+            (
+                "ai",
+                json.dumps(example["output"]).replace('{', '{{').replace('}', '}}')
             )
+        )
 
         messages.append(
             (
@@ -74,17 +103,23 @@ class Evaluator:
         return ChatPromptTemplate.from_messages(messages)
 
     async def classify_email(self, message: str):
-        return await self.chain.ainvoke(
+        result = await self.chain.ainvoke(
             {
                 "email": message,
+                "format_instructions": (
+                    self.parser.get_format_instructions()
+                ),
             }
+        )
+
+        return self.output_model.model_validate(
+            result
         )
 
     async def evaluate_case(self, test_case):
         start = time.perf_counter()
 
         try:
-
             prediction = await self.classify_email(
                 test_case.input
             )
@@ -133,7 +168,7 @@ class Evaluator:
         dataset_version: str,
     ) -> list[EvaluationResult]:
 
-        dataset = PromptDatasetManager("dataset").get(
+        dataset = YamlManager("dataset").load(
             dataset_version
         )
 
@@ -155,7 +190,9 @@ class Evaluator:
 
             batch_results = await asyncio.gather(
                 *[
-                    self.evaluate_case(test_case)
+                    self.evaluate_case(
+                        DatasetItem.model_validate(test_case)
+                    )
                     for test_case in batch
                 ]
             )

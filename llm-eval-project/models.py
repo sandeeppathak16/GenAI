@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from pydantic import BaseModel, Field, create_model
 from typing import Literal, Any, Optional
 
@@ -71,10 +71,20 @@ class EvaluationDiff(BaseModel):
     previous_accuracy: float
     current_accuracy: float
     accuracy_delta: float
-    previous_latency: float
-    current_latency: float
-    latency_delta: float
     regressions: list[EvaluationResult]
     improvements: list[EvaluationResult]
     regression_count: int
     improvement_count: int
+
+
+class ExpectedOutput(BaseModel):
+    category: str
+    summary: str
+
+
+class DatasetItem(BaseModel):
+    id: str
+    input: str
+    expected: ExpectedOutput
+    expected_difficulty: str
+    notes: str

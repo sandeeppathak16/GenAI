@@ -43,7 +43,7 @@ jobs:
         run: pip install --no-cache-dir poetry==1.8.5
 
       - name: Install project dependencies
-        run: poetry install --no-root --only main
+        run: poetry install --no-root
 
       - name: Run eval pipeline
         id: run_eval

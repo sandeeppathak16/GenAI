@@ -1,9 +1,9 @@
-name: LLM Eval — Prompt Regression Check
+name: LLM Eval - Prompt Regression Check
 
 on:
   pull_request:
     paths:
-      - "prompts/**"
+      - "llm-eval-project/prompts/**"
 
 concurrency:
   group: llm-eval-${{ github.head_ref }}
@@ -16,6 +16,10 @@ jobs:
     permissions:
       pull-requests: write
       contents: read
+
+    defaults:
+      run:
+        working-directory: llm-eval-project
 
     steps:
       - name: Checkout repository
@@ -31,7 +35,7 @@ jobs:
       - name: Restore eval baseline (latest.json)
         uses: actions/cache/restore@v4
         with:
-          path: reports/latest.json
+          path: llm-eval-project/reports/latest.json
           key: eval-baseline-${{ github.base_ref }}
         continue-on-error: true
 
@@ -70,7 +74,7 @@ jobs:
           warning_thr  = float(os.environ.get("EVAL_WARNING_THRESHOLD",  "0.03"))
 
           if not report_path.exists():
-              print("No report found — eval likely failed before writing output.")
+              print("No report found - eval likely failed before writing output.")
               with open(os.environ["GITHUB_OUTPUT"], "a") as f:
                   f.write("status=ERROR\n")
                   f.write("accuracy=N/A\n")
@@ -84,40 +88,35 @@ jobs:
 
           data = json.loads(report_path.read_text())
 
-          accuracy          = data["accuracy"]
-          passed            = data["passed"]
-          total             = data["total"]
-          failed            = data["failed"]
-          avg_latency       = data["average_latency_ms"]
-          prompt_version    = data["prompt_version"]
-          dataset_version   = data["dataset_version"]
+          accuracy        = data["accuracy"]
+          passed          = data["passed"]
+          total           = data["total"]
+          failed          = data["failed"]
+          avg_latency     = data["average_latency_ms"]
+          prompt_version  = data["prompt_version"]
+          dataset_version = data["dataset_version"]
 
-          # Build regression details table (top 10)
           results = data.get("results", [])
           regressions = [r for r in results if not r["passed"]]
           regressions_md = ""
           if regressions:
               rows = "\n".join(
-                  f"| `{r['id']}` | {r.get('difficulty','—')} | `{r['expected_category']}` | `{r.get('predicted_category','—')}` |"
+                  f"| `{r['id']}` | {r.get('difficulty', '-')} | `{r['expected_category']}` | `{r.get('predicted_category', '-')}` |"
                   for r in regressions[:10]
               )
               regressions_md = (
-                  "### ❌ Failed Cases (up to 10)\n\n"
+                  "### Failed Cases (up to 10)\n\n"
                   "| ID | Difficulty | Expected | Predicted |\n"
                   "|---|---|---|---|\n"
                   + rows
               )
 
-          # Determine status — requires baseline diff to detect regression
-          # We'll read the diff from the run itself if present (comparison done inside the pipeline)
-          # For the status badge we derive from accuracy alone on first run
           status = "PASS"
           accuracy_delta = "N/A"
           regression_count = len(regressions)
           improvement_count = 0
           has_diff = "false"
 
-          # Try to detect previous baseline for delta display
           history_dir = Path("reports/history")
           history_files = sorted(history_dir.glob("*.json")) if history_dir.exists() else []
           if len(history_files) >= 2:
@@ -132,7 +131,6 @@ jobs:
               elif delta < -warning_thr:
                   status = "WARNING"
 
-          # Write to GITHUB_OUTPUT (multi-line safe via heredoc-style delimiter)
           output = os.environ["GITHUB_OUTPUT"]
           with open(output, "a") as f:
               f.write(f"status={status}\n")
@@ -147,7 +145,6 @@ jobs:
               f.write(f"prompt_version={prompt_version}\n")
               f.write(f"dataset_version={dataset_version}\n")
               f.write(f"has_diff={has_diff}\n")
-              # Multi-line output needs heredoc delimiter
               f.write(f"regressions_md<<DELIM\n{regressions_md}\nDELIM\n")
           PYEOF
 
@@ -173,19 +170,19 @@ jobs:
             const status = process.env.STATUS;
             const hasDiff = process.env.HAS_DIFF === 'true';
 
-            const badge = {
-              PASS:     '✅ **PASS**',
-              WARNING:  '⚠️ **WARNING**',
-              CRITICAL: '🔴 **CRITICAL — Merge Blocked**',
-              ERROR:    '💥 **ERROR — Eval Failed**',
-            }[status] ?? '❓ Unknown';
+            const statusLabel = {
+              PASS:     '**PASS**',
+              WARNING:  '**WARNING**',
+              CRITICAL: '**CRITICAL - Merge Blocked**',
+              ERROR:    '**ERROR - Eval Failed**',
+            }[status] ?? 'Unknown';
 
             const deltaRow = hasDiff
-              ? `| Accuracy Δ | \`${process.env.ACCURACY_DELTA}\` |\n| Regressions | ${process.env.REGRESSION_COUNT} |\n| Improvements | ${process.env.IMPROVEMENT_COUNT} |`
-              : '| Baseline | _No previous run — first eval_ |';
+              ? `| Accuracy Delta | \`${process.env.ACCURACY_DELTA}\` |\n| Regressions | ${process.env.REGRESSION_COUNT} |\n| Improvements | ${process.env.IMPROVEMENT_COUNT} |`
+              : '| Baseline | _No previous run - first eval_ |';
 
             const body = [
-              `## 🤖 LLM Eval Report — ${badge}`,
+              `## LLM Eval Report - ${statusLabel}`,
               '',
               '| Metric | Value |',
               '|--------|-------|',
@@ -200,13 +197,12 @@ jobs:
               '',
               process.env.REGRESSIONS_MD || '',
               '',
-              `<sub>Run triggered by commit \`${context.sha.slice(0, 7)}\` · [View full logs](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})</sub>`,
+              `<sub>Commit \`${context.sha.slice(0, 7)}\` - [View logs](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})</sub>`,
             ].join('\n');
 
             const MARKER = '<!-- llm-eval-bot -->';
             const markedBody = MARKER + '\n' + body;
 
-            // Find existing comment to update (avoid spamming new comments)
             const comments = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -235,13 +231,13 @@ jobs:
         if: steps.run_eval.outcome == 'success'
         uses: actions/cache/save@v4
         with:
-          path: reports/latest.json
+          path: llm-eval-project/reports/latest.json
           key: eval-baseline-${{ github.base_ref }}-${{ github.run_id }}
 
       - name: Fail on critical regression
         if: steps.parse.outputs.status == 'CRITICAL'
         run: |
-          echo "::error::Critical regression detected — accuracy dropped by more than the configured threshold."
+          echo "::error::Critical regression detected - accuracy dropped by more than the configured threshold."
           echo "::error::Accuracy delta: ${{ steps.parse.outputs.accuracy_delta }}"
           echo "::error::Failed cases: ${{ steps.parse.outputs.regression_count }}"
           exit 1

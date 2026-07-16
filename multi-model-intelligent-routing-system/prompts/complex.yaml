@@ -1,0 +1,598 @@
+version: "1.0"
+
+prompts:
+- id: T3_001
+  tier: complex
+  category: system_design
+  expected_model: gpt-4o
+  prompt: |
+    Design a scalable system for the following problem.
+
+    Build a URL shortening service capable of handling 100 million requests per day.
+- id: T3_002
+  tier: complex
+  category: code_review
+  expected_model: gpt-4o
+  prompt: |
+    Review the following code for correctness, performance, readability, and security.
+
+    def find_duplicates(nums):
+        result=[]
+        for i in nums:
+            if nums.count(i)>1:
+                result.append(i)
+        return result
+- id: T3_003
+  tier: complex
+  category: debugging
+  expected_model: gpt-4o
+  prompt: |
+    Identify the bug, explain the root cause, and propose a fix.
+
+    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+- id: T3_004
+  tier: complex
+  category: architecture
+  expected_model: gpt-4o
+  prompt: |
+    Design a production-ready software architecture.
+
+    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+- id: T3_005
+  tier: complex
+  category: algorithm_design
+  expected_model: gpt-4o
+  prompt: |
+    Design an efficient algorithm and analyze its complexity.
+
+    Given one billion log records, find the top 100 most frequent IP addresses.
+- id: T3_006
+  tier: complex
+  category: root_cause_analysis
+  expected_model: gpt-4o
+  prompt: |
+    Analyze the incident and determine the most likely root cause.
+
+    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+- id: T3_007
+  tier: complex
+  category: planning
+  expected_model: gpt-4o
+  prompt: |
+    Create a detailed implementation plan with milestones and risks.
+
+    Migrate a monolithic Python application to microservices over six months.
+- id: T3_008
+  tier: complex
+  category: creative_generation
+  expected_model: gpt-4o
+  prompt: |
+    Write a creative but technically accurate solution.
+
+    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+- id: T3_009
+  tier: complex
+  category: decision_making
+  expected_model: gpt-4o
+  prompt: |
+    Evaluate the options and recommend the best approach with trade-offs.
+
+    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+- id: T3_010
+  tier: complex
+  category: sql_generation
+  expected_model: gpt-4o
+  prompt: |
+    Generate SQL queries to solve the following business problem.
+
+    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+- id: T3_011
+  tier: complex
+  category: system_design
+  expected_model: gpt-4o
+  prompt: |
+    Design a scalable system for the following problem.
+
+    Build a URL shortening service capable of handling 100 million requests per day.
+- id: T3_012
+  tier: complex
+  category: code_review
+  expected_model: gpt-4o
+  prompt: |
+    Review the following code for correctness, performance, readability, and security.
+
+    def find_duplicates(nums):
+        result=[]
+        for i in nums:
+            if nums.count(i)>1:
+                result.append(i)
+        return result
+- id: T3_013
+  tier: complex
+  category: debugging
+  expected_model: gpt-4o
+  prompt: |
+    Identify the bug, explain the root cause, and propose a fix.
+
+    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+- id: T3_014
+  tier: complex
+  category: architecture
+  expected_model: gpt-4o
+  prompt: |
+    Design a production-ready software architecture.
+
+    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+- id: T3_015
+  tier: complex
+  category: algorithm_design
+  expected_model: gpt-4o
+  prompt: |
+    Design an efficient algorithm and analyze its complexity.
+
+    Given one billion log records, find the top 100 most frequent IP addresses.
+- id: T3_016
+  tier: complex
+  category: root_cause_analysis
+  expected_model: gpt-4o
+  prompt: |
+    Analyze the incident and determine the most likely root cause.
+
+    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+- id: T3_017
+  tier: complex
+  category: planning
+  expected_model: gpt-4o
+  prompt: |
+    Create a detailed implementation plan with milestones and risks.
+
+    Migrate a monolithic Python application to microservices over six months.
+- id: T3_018
+  tier: complex
+  category: creative_generation
+  expected_model: gpt-4o
+  prompt: |
+    Write a creative but technically accurate solution.
+
+    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+- id: T3_019
+  tier: complex
+  category: decision_making
+  expected_model: gpt-4o
+  prompt: |
+    Evaluate the options and recommend the best approach with trade-offs.
+
+    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+- id: T3_020
+  tier: complex
+  category: sql_generation
+  expected_model: gpt-4o
+  prompt: |
+    Generate SQL queries to solve the following business problem.
+
+    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+- id: T3_021
+  tier: complex
+  category: system_design
+  expected_model: gpt-4o
+  prompt: |
+    Design a scalable system for the following problem.
+
+    Build a URL shortening service capable of handling 100 million requests per day.
+- id: T3_022
+  tier: complex
+  category: code_review
+  expected_model: gpt-4o
+  prompt: |
+    Review the following code for correctness, performance, readability, and security.
+
+    def find_duplicates(nums):
+        result=[]
+        for i in nums:
+            if nums.count(i)>1:
+                result.append(i)
+        return result
+- id: T3_023
+  tier: complex
+  category: debugging
+  expected_model: gpt-4o
+  prompt: |
+    Identify the bug, explain the root cause, and propose a fix.
+
+    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+- id: T3_024
+  tier: complex
+  category: architecture
+  expected_model: gpt-4o
+  prompt: |
+    Design a production-ready software architecture.
+
+    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+- id: T3_025
+  tier: complex
+  category: algorithm_design
+  expected_model: gpt-4o
+  prompt: |
+    Design an efficient algorithm and analyze its complexity.
+
+    Given one billion log records, find the top 100 most frequent IP addresses.
+- id: T3_026
+  tier: complex
+  category: root_cause_analysis
+  expected_model: gpt-4o
+  prompt: |
+    Analyze the incident and determine the most likely root cause.
+
+    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+- id: T3_027
+  tier: complex
+  category: planning
+  expected_model: gpt-4o
+  prompt: |
+    Create a detailed implementation plan with milestones and risks.
+
+    Migrate a monolithic Python application to microservices over six months.
+- id: T3_028
+  tier: complex
+  category: creative_generation
+  expected_model: gpt-4o
+  prompt: |
+    Write a creative but technically accurate solution.
+
+    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+- id: T3_029
+  tier: complex
+  category: decision_making
+  expected_model: gpt-4o
+  prompt: |
+    Evaluate the options and recommend the best approach with trade-offs.
+
+    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+- id: T3_030
+  tier: complex
+  category: sql_generation
+  expected_model: gpt-4o
+  prompt: |
+    Generate SQL queries to solve the following business problem.
+
+    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+- id: T3_031
+  tier: complex
+  category: system_design
+  expected_model: gpt-4o
+  prompt: |
+    Design a scalable system for the following problem.
+
+    Build a URL shortening service capable of handling 100 million requests per day.
+- id: T3_032
+  tier: complex
+  category: code_review
+  expected_model: gpt-4o
+  prompt: |
+    Review the following code for correctness, performance, readability, and security.
+
+    def find_duplicates(nums):
+        result=[]
+        for i in nums:
+            if nums.count(i)>1:
+                result.append(i)
+        return result
+- id: T3_033
+  tier: complex
+  category: debugging
+  expected_model: gpt-4o
+  prompt: |
+    Identify the bug, explain the root cause, and propose a fix.
+
+    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+- id: T3_034
+  tier: complex
+  category: architecture
+  expected_model: gpt-4o
+  prompt: |
+    Design a production-ready software architecture.
+
+    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+- id: T3_035
+  tier: complex
+  category: algorithm_design
+  expected_model: gpt-4o
+  prompt: |
+    Design an efficient algorithm and analyze its complexity.
+
+    Given one billion log records, find the top 100 most frequent IP addresses.
+- id: T3_036
+  tier: complex
+  category: root_cause_analysis
+  expected_model: gpt-4o
+  prompt: |
+    Analyze the incident and determine the most likely root cause.
+
+    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+- id: T3_037
+  tier: complex
+  category: planning
+  expected_model: gpt-4o
+  prompt: |
+    Create a detailed implementation plan with milestones and risks.
+
+    Migrate a monolithic Python application to microservices over six months.
+- id: T3_038
+  tier: complex
+  category: creative_generation
+  expected_model: gpt-4o
+  prompt: |
+    Write a creative but technically accurate solution.
+
+    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+- id: T3_039
+  tier: complex
+  category: decision_making
+  expected_model: gpt-4o
+  prompt: |
+    Evaluate the options and recommend the best approach with trade-offs.
+
+    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+- id: T3_040
+  tier: complex
+  category: sql_generation
+  expected_model: gpt-4o
+  prompt: |
+    Generate SQL queries to solve the following business problem.
+
+    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+- id: T3_041
+  tier: complex
+  category: system_design
+  expected_model: gpt-4o
+  prompt: |
+    Design a scalable system for the following problem.
+
+    Build a URL shortening service capable of handling 100 million requests per day.
+- id: T3_042
+  tier: complex
+  category: code_review
+  expected_model: gpt-4o
+  prompt: |
+    Review the following code for correctness, performance, readability, and security.
+
+    def find_duplicates(nums):
+        result=[]
+        for i in nums:
+            if nums.count(i)>1:
+                result.append(i)
+        return result
+- id: T3_043
+  tier: complex
+  category: debugging
+  expected_model: gpt-4o
+  prompt: |
+    Identify the bug, explain the root cause, and propose a fix.
+
+    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+- id: T3_044
+  tier: complex
+  category: architecture
+  expected_model: gpt-4o
+  prompt: |
+    Design a production-ready software architecture.
+
+    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+- id: T3_045
+  tier: complex
+  category: algorithm_design
+  expected_model: gpt-4o
+  prompt: |
+    Design an efficient algorithm and analyze its complexity.
+
+    Given one billion log records, find the top 100 most frequent IP addresses.
+- id: T3_046
+  tier: complex
+  category: root_cause_analysis
+  expected_model: gpt-4o
+  prompt: |
+    Analyze the incident and determine the most likely root cause.
+
+    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+- id: T3_047
+  tier: complex
+  category: planning
+  expected_model: gpt-4o
+  prompt: |
+    Create a detailed implementation plan with milestones and risks.
+
+    Migrate a monolithic Python application to microservices over six months.
+- id: T3_048
+  tier: complex
+  category: creative_generation
+  expected_model: gpt-4o
+  prompt: |
+    Write a creative but technically accurate solution.
+
+    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+- id: T3_049
+  tier: complex
+  category: decision_making
+  expected_model: gpt-4o
+  prompt: |
+    Evaluate the options and recommend the best approach with trade-offs.
+
+    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+- id: T3_050
+  tier: complex
+  category: sql_generation
+  expected_model: gpt-4o
+  prompt: |
+    Generate SQL queries to solve the following business problem.
+
+    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+- id: T3_051
+  tier: complex
+  category: system_design
+  expected_model: gpt-4o
+  prompt: |
+    Design a scalable system for the following problem.
+
+    Build a URL shortening service capable of handling 100 million requests per day.
+- id: T3_052
+  tier: complex
+  category: code_review
+  expected_model: gpt-4o
+  prompt: |
+    Review the following code for correctness, performance, readability, and security.
+
+    def find_duplicates(nums):
+        result=[]
+        for i in nums:
+            if nums.count(i)>1:
+                result.append(i)
+        return result
+- id: T3_053
+  tier: complex
+  category: debugging
+  expected_model: gpt-4o
+  prompt: |
+    Identify the bug, explain the root cause, and propose a fix.
+
+    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+- id: T3_054
+  tier: complex
+  category: architecture
+  expected_model: gpt-4o
+  prompt: |
+    Design a production-ready software architecture.
+
+    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+- id: T3_055
+  tier: complex
+  category: algorithm_design
+  expected_model: gpt-4o
+  prompt: |
+    Design an efficient algorithm and analyze its complexity.
+
+    Given one billion log records, find the top 100 most frequent IP addresses.
+- id: T3_056
+  tier: complex
+  category: root_cause_analysis
+  expected_model: gpt-4o
+  prompt: |
+    Analyze the incident and determine the most likely root cause.
+
+    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+- id: T3_057
+  tier: complex
+  category: planning
+  expected_model: gpt-4o
+  prompt: |
+    Create a detailed implementation plan with milestones and risks.
+
+    Migrate a monolithic Python application to microservices over six months.
+- id: T3_058
+  tier: complex
+  category: creative_generation
+  expected_model: gpt-4o
+  prompt: |
+    Write a creative but technically accurate solution.
+
+    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+- id: T3_059
+  tier: complex
+  category: decision_making
+  expected_model: gpt-4o
+  prompt: |
+    Evaluate the options and recommend the best approach with trade-offs.
+
+    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+- id: T3_060
+  tier: complex
+  category: sql_generation
+  expected_model: gpt-4o
+  prompt: |
+    Generate SQL queries to solve the following business problem.
+
+    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+- id: T3_061
+  tier: complex
+  category: system_design
+  expected_model: gpt-4o
+  prompt: |
+    Design a scalable system for the following problem.
+
+    Build a URL shortening service capable of handling 100 million requests per day.
+- id: T3_062
+  tier: complex
+  category: code_review
+  expected_model: gpt-4o
+  prompt: |
+    Review the following code for correctness, performance, readability, and security.
+
+    def find_duplicates(nums):
+        result=[]
+        for i in nums:
+            if nums.count(i)>1:
+                result.append(i)
+        return result
+- id: T3_063
+  tier: complex
+  category: debugging
+  expected_model: gpt-4o
+  prompt: |
+    Identify the bug, explain the root cause, and propose a fix.
+
+    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+- id: T3_064
+  tier: complex
+  category: architecture
+  expected_model: gpt-4o
+  prompt: |
+    Design a production-ready software architecture.
+
+    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+- id: T3_065
+  tier: complex
+  category: algorithm_design
+  expected_model: gpt-4o
+  prompt: |
+    Design an efficient algorithm and analyze its complexity.
+
+    Given one billion log records, find the top 100 most frequent IP addresses.
+- id: T3_066
+  tier: complex
+  category: root_cause_analysis
+  expected_model: gpt-4o
+  prompt: |
+    Analyze the incident and determine the most likely root cause.
+
+    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+- id: T3_067
+  tier: complex
+  category: planning
+  expected_model: gpt-4o
+  prompt: |
+    Create a detailed implementation plan with milestones and risks.
+
+    Migrate a monolithic Python application to microservices over six months.
+- id: T3_068
+  tier: complex
+  category: creative_generation
+  expected_model: gpt-4o
+  prompt: |
+    Write a creative but technically accurate solution.
+
+    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+- id: T3_069
+  tier: complex
+  category: decision_making
+  expected_model: gpt-4o
+  prompt: |
+    Evaluate the options and recommend the best approach with trade-offs.
+
+    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+- id: T3_070
+  tier: complex
+  category: sql_generation
+  expected_model: gpt-4o
+  prompt: |
+    Generate SQL queries to solve the following business problem.
+
+    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.

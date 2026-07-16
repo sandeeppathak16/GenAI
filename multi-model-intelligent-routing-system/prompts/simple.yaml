@@ -1,0 +1,610 @@
+version: "1.0"
+
+prompts:
+  - id: T1_001
+    tier: simple
+    category: extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Extract the following information from the email and return JSON.
+
+      Email:
+      Hello,
+
+      My order #12345 hasn't arrived yet. Please deliver it tomorrow afternoon.
+
+      Thanks,
+      John
+
+      Return:
+      {
+        "order_id": "",
+        "issue": "",
+        "requested_action": ""
+      }
+
+  - id: T1_002
+    tier: simple
+    category: formatting
+    expected_model: gpt-4o-mini
+    prompt: |
+      Convert the following CSV into a markdown table.
+
+      Name,Department,Experience
+      Alice,Engineering,5
+      Bob,Marketing,3
+      Charlie,Sales,7
+
+  - id: T1_003
+    tier: simple
+    category: qa
+    expected_model: gpt-4o-mini
+    prompt: |
+      Answer the question using only the provided context.
+
+      Context:
+      Python was created by Guido van Rossum and first released in 1991.
+
+      Question:
+      Who created Python?
+
+  - id: T1_004
+    tier: simple
+    category: translation
+    expected_model: gpt-4o-mini
+    prompt: |
+      Translate the following sentence into French.
+
+      "Good morning. I hope you're having a wonderful day."
+
+  - id: T1_005
+    tier: simple
+    category: grammar
+    expected_model: gpt-4o-mini
+    prompt: |
+      Correct the grammar of the following paragraph without changing its meaning.
+
+      "He don't likes playing football because he have injured his knee."
+
+  - id: T1_006
+    tier: simple
+    category: json_conversion
+    expected_model: gpt-4o-mini
+    prompt: |
+      Convert the following employee information into JSON.
+
+      Employee Name: Sarah
+      Department: HR
+      Employee ID: EMP-908
+      Location: London
+
+  - id: T1_007
+    tier: simple
+    category: entity_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Extract all people, organizations, and locations from the following text.
+
+      "Alice from Microsoft visited Google's office in New York with Bob."
+
+      Return JSON.
+
+  - id: T1_008
+    tier: simple
+    category: date_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Extract all dates mentioned below and normalize them into YYYY-MM-DD format.
+
+      "The project starts on August 5, 2026 and finishes on September 12, 2026."
+
+  - id: T1_009
+    tier: simple
+    category: email_subject
+    expected_model: gpt-4o-mini
+    prompt: |
+      Generate a concise email subject line for the following email.
+
+      Hi Team,
+
+      Our production deployment has been postponed until Friday because additional testing is required.
+
+      Thanks.
+
+  - id: T1_010
+    tier: simple
+    category: keyword_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Extract the five most important keywords from the following paragraph.
+
+      Artificial Intelligence is transforming industries by automating repetitive tasks,
+      improving decision making through predictive analytics, and enabling more
+      personalized customer experiences.
+
+  - id: T1_011
+    tier: simple
+    category: extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Extract the invoice number, customer name, and total amount from the following invoice text.
+
+      Invoice:
+      Invoice No: INV-1011
+      Customer: Customer 11
+      Total: $111.50
+      Due Date: 2026-08-12
+
+  - id: T1_012
+    tier: simple
+    category: formatting
+    expected_model: gpt-4o-mini
+    prompt: |
+      Convert the following bullet list into a markdown table.
+
+      Name,Score
+      Alice,82
+      Bob,72
+      Charlie,92
+
+  - id: T1_013
+    tier: simple
+    category: qa
+    expected_model: gpt-4o-mini
+    prompt: |
+      Context:
+      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+
+      Question:
+      What is the capital of Japan?
+
+  - id: T1_014
+    tier: simple
+    category: translation
+    expected_model: gpt-4o-mini
+    prompt: |
+      Translate "Thank you for your assistance." into Spanish.
+  - id: T1_015
+    tier: simple
+    category: grammar
+    expected_model: gpt-4o-mini
+    prompt: |
+      Correct: "She dont know where are the keys."
+  - id: T1_016
+    tier: simple
+    category: json_conversion
+    expected_model: gpt-4o-mini
+    prompt: |
+      Employee: Employee 16
+      ID: EMP-2016
+      Department: Engineering
+
+  - id: T1_017
+    tier: simple
+    category: entity_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+  - id: T1_018
+    tier: simple
+    category: date_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+  - id: T1_019
+    tier: simple
+    category: keyword_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+  - id: T1_020
+    tier: simple
+    category: email_subject
+    expected_model: gpt-4o-mini
+    prompt: |
+      Email: Production deployment has been delayed until Monday due to testing.
+  - id: T1_021
+    tier: simple
+    category: extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Extract the invoice number, customer name, and total amount from the following invoice text.
+
+      Invoice:
+      Invoice No: INV-1021
+      Customer: Customer 21
+      Total: $121.50
+      Due Date: 2026-08-22
+
+  - id: T1_022
+    tier: simple
+    category: formatting
+    expected_model: gpt-4o-mini
+    prompt: |
+      Convert the following bullet list into a markdown table.
+
+      Name,Score
+      Alice,72
+      Bob,82
+      Charlie,87
+
+  - id: T1_023
+    tier: simple
+    category: qa
+    expected_model: gpt-4o-mini
+    prompt: |
+      Context:
+      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+
+      Question:
+      What is the capital of Japan?
+
+  - id: T1_024
+    tier: simple
+    category: translation
+    expected_model: gpt-4o-mini
+    prompt: |
+      Translate "Thank you for your assistance." into Spanish.
+  - id: T1_025
+    tier: simple
+    category: grammar
+    expected_model: gpt-4o-mini
+    prompt: |
+      Correct: "She dont know where are the keys."
+  - id: T1_026
+    tier: simple
+    category: json_conversion
+    expected_model: gpt-4o-mini
+    prompt: |
+      Employee: Employee 26
+      ID: EMP-2026
+      Department: Engineering
+
+  - id: T1_027
+    tier: simple
+    category: entity_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+  - id: T1_028
+    tier: simple
+    category: date_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+  - id: T1_029
+    tier: simple
+    category: keyword_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+  - id: T1_030
+    tier: simple
+    category: email_subject
+    expected_model: gpt-4o-mini
+    prompt: |
+      Email: Production deployment has been delayed until Monday due to testing.
+  - id: T1_031
+    tier: simple
+    category: extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Extract the invoice number, customer name, and total amount from the following invoice text.
+
+      Invoice:
+      Invoice No: INV-1031
+      Customer: Customer 31
+      Total: $131.50
+      Due Date: 2026-08-04
+
+  - id: T1_032
+    tier: simple
+    category: formatting
+    expected_model: gpt-4o-mini
+    prompt: |
+      Convert the following bullet list into a markdown table.
+
+      Name,Score
+      Alice,82
+      Bob,62
+      Charlie,82
+
+  - id: T1_033
+    tier: simple
+    category: qa
+    expected_model: gpt-4o-mini
+    prompt: |
+      Context:
+      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+
+      Question:
+      What is the capital of Japan?
+
+  - id: T1_034
+    tier: simple
+    category: translation
+    expected_model: gpt-4o-mini
+    prompt: |
+      Translate "Thank you for your assistance." into Spanish.
+  - id: T1_035
+    tier: simple
+    category: grammar
+    expected_model: gpt-4o-mini
+    prompt: |
+      Correct: "She dont know where are the keys."
+  - id: T1_036
+    tier: simple
+    category: json_conversion
+    expected_model: gpt-4o-mini
+    prompt: |
+      Employee: Employee 36
+      ID: EMP-2036
+      Department: Engineering
+
+  - id: T1_037
+    tier: simple
+    category: entity_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+  - id: T1_038
+    tier: simple
+    category: date_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+  - id: T1_039
+    tier: simple
+    category: keyword_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+  - id: T1_040
+    tier: simple
+    category: email_subject
+    expected_model: gpt-4o-mini
+    prompt: |
+      Email: Production deployment has been delayed until Monday due to testing.
+  - id: T1_041
+    tier: simple
+    category: extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Extract the invoice number, customer name, and total amount from the following invoice text.
+
+      Invoice:
+      Invoice No: INV-1041
+      Customer: Customer 41
+      Total: $141.50
+      Due Date: 2026-08-14
+
+  - id: T1_042
+    tier: simple
+    category: formatting
+    expected_model: gpt-4o-mini
+    prompt: |
+      Convert the following bullet list into a markdown table.
+
+      Name,Score
+      Alice,72
+      Bob,72
+      Charlie,92
+
+  - id: T1_043
+    tier: simple
+    category: qa
+    expected_model: gpt-4o-mini
+    prompt: |
+      Context:
+      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+
+      Question:
+      What is the capital of Japan?
+
+  - id: T1_044
+    tier: simple
+    category: translation
+    expected_model: gpt-4o-mini
+    prompt: |
+      Translate "Thank you for your assistance." into Spanish.
+  - id: T1_045
+    tier: simple
+    category: grammar
+    expected_model: gpt-4o-mini
+    prompt: |
+      Correct: "She dont know where are the keys."
+  - id: T1_046
+    tier: simple
+    category: json_conversion
+    expected_model: gpt-4o-mini
+    prompt: |
+      Employee: Employee 46
+      ID: EMP-2046
+      Department: Engineering
+
+  - id: T1_047
+    tier: simple
+    category: entity_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+  - id: T1_048
+    tier: simple
+    category: date_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+  - id: T1_049
+    tier: simple
+    category: keyword_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+  - id: T1_050
+    tier: simple
+    category: email_subject
+    expected_model: gpt-4o-mini
+    prompt: |
+      Email: Production deployment has been delayed until Monday due to testing.
+  - id: T1_051
+    tier: simple
+    category: extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Extract the invoice number, customer name, and total amount from the following invoice text.
+
+      Invoice:
+      Invoice No: INV-1051
+      Customer: Customer 51
+      Total: $151.50
+      Due Date: 2026-08-24
+
+  - id: T1_052
+    tier: simple
+    category: formatting
+    expected_model: gpt-4o-mini
+    prompt: |
+      Convert the following bullet list into a markdown table.
+
+      Name,Score
+      Alice,82
+      Bob,82
+      Charlie,87
+
+  - id: T1_053
+    tier: simple
+    category: qa
+    expected_model: gpt-4o-mini
+    prompt: |
+      Context:
+      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+
+      Question:
+      What is the capital of Japan?
+
+  - id: T1_054
+    tier: simple
+    category: translation
+    expected_model: gpt-4o-mini
+    prompt: |
+      Translate "Thank you for your assistance." into Spanish.
+  - id: T1_055
+    tier: simple
+    category: grammar
+    expected_model: gpt-4o-mini
+    prompt: |
+      Correct: "She dont know where are the keys."
+  - id: T1_056
+    tier: simple
+    category: json_conversion
+    expected_model: gpt-4o-mini
+    prompt: |
+      Employee: Employee 56
+      ID: EMP-2056
+      Department: Engineering
+
+  - id: T1_057
+    tier: simple
+    category: entity_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+  - id: T1_058
+    tier: simple
+    category: date_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+  - id: T1_059
+    tier: simple
+    category: keyword_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+  - id: T1_060
+    tier: simple
+    category: email_subject
+    expected_model: gpt-4o-mini
+    prompt: |
+      Email: Production deployment has been delayed until Monday due to testing.
+  - id: T1_061
+    tier: simple
+    category: extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Extract the invoice number, customer name, and total amount from the following invoice text.
+
+      Invoice:
+      Invoice No: INV-1061
+      Customer: Customer 61
+      Total: $161.50
+      Due Date: 2026-08-06
+
+  - id: T1_062
+    tier: simple
+    category: formatting
+    expected_model: gpt-4o-mini
+    prompt: |
+      Convert the following bullet list into a markdown table.
+
+      Name,Score
+      Alice,72
+      Bob,62
+      Charlie,82
+
+  - id: T1_063
+    tier: simple
+    category: qa
+    expected_model: gpt-4o-mini
+    prompt: |
+      Context:
+      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+
+      Question:
+      What is the capital of Japan?
+
+  - id: T1_064
+    tier: simple
+    category: translation
+    expected_model: gpt-4o-mini
+    prompt: |
+      Translate "Thank you for your assistance." into Spanish.
+  - id: T1_065
+    tier: simple
+    category: grammar
+    expected_model: gpt-4o-mini
+    prompt: |
+      Correct: "She dont know where are the keys."
+  - id: T1_066
+    tier: simple
+    category: json_conversion
+    expected_model: gpt-4o-mini
+    prompt: |
+      Employee: Employee 66
+      ID: EMP-2066
+      Department: Engineering
+
+  - id: T1_067
+    tier: simple
+    category: entity_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+  - id: T1_068
+    tier: simple
+    category: date_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+  - id: T1_069
+    tier: simple
+    category: keyword_extraction
+    expected_model: gpt-4o-mini
+    prompt: |
+      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+  - id: T1_070
+    tier: simple
+    category: email_subject
+    expected_model: gpt-4o-mini
+    prompt: |
+      Email: Production deployment has been delayed until Monday due to testing.

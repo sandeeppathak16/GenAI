@@ -6,593 +6,894 @@ prompts:
   category: system_design
   expected_model: gpt-4o
   prompt: |
-    Design a scalable system for the following problem.
+    Design a highly available, globally distributed URL shortening service capable of handling 100 million write requests and 2 billion read requests per day with sub-50ms read latency.
 
-    Build a URL shortening service capable of handling 100 million requests per day.
+    Your design must address:
+    1. Key Generation Strategy: Base62 vs. MD5/SHA-256 vs. Pre-allocated Range-based Key Generators (Zookeeper). Prevent collisions under high concurrency.
+    2. Storage Architecture: Multi-region database selection (SQL vs. NoSQL), indexing strategy, and partitioning/sharding scheme.
+    3. Caching & CDN Strategy: Cache eviction policy (LRU vs. LFU) to maintain high cache hit rates for viral links.
+    4. Rate Limiting & Security: Protection against malicious link generation, DDoS, and crawler scraping.
+    5. Analytics Engine: Real-time click analytics stream processing pipeline without impacting write throughput.
+
 - id: T3_002
   tier: complex
   category: code_review
   expected_model: gpt-4o
   prompt: |
-    Review the following code for correctness, performance, readability, and security.
+    Perform a comprehensive code review of the following Python function:
 
+    ```python
     def find_duplicates(nums):
         result=[]
         for i in nums:
             if nums.count(i)>1:
                 result.append(i)
         return result
+    ```
+
+    1. Identify all correctness issues (e.g., handling duplicate entries in output, type safety, empty input).
+    2. Analyze Big-O time and space complexity, highlighting performance bottlenecks on large input arrays ($N > 10^5$).
+    3. Provide a refactored implementation using optimal data structures ($O(N)$ time complexity) while maintaining original element ordering or returning unique duplicate values.
+    4. Highlight PEP 8 styling, type hints, and write unit tests covering edge cases.
+
 - id: T3_003
   tier: complex
   category: debugging
   expected_model: gpt-4o
   prompt: |
-    Identify the bug, explain the root cause, and propose a fix.
+    Diagnose and resolve the following production incident in a Python FastAPI application backed by PostgreSQL (SQLAlchemy + AsyncPG):
 
-    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+    Symptom: Under load test (>100 concurrent requests), the API returns HTTP 500 status codes. Application logs indicate intermittent `asyncpg.exceptions.TooManyConnectionsError` and `sqlalchemy.exc.TimeoutError: QueuePool limit of size 5 overflow 10 reached`.
+
+    1. Root Cause Analysis: Explain how connection pool starvation and blocking synchronous code within async endpoint handlers cause database timeouts.
+    2. Architectural Remediation: Provide concrete code snippets showing optimal connection pool sizing, PgBouncer integration strategy, and properly written async endpoint code.
+    3. Observability Strategy: List specific Prometheus/Grafana metrics to track for early warning signals before HTTP 500 cascading failures occur.
+
 - id: T3_004
   tier: complex
   category: architecture
   expected_model: gpt-4o
   prompt: |
-    Design a production-ready software architecture.
+    Architect an event-driven, microservices-based e-commerce platform processing 10,000 requests per second across Orders, Payments, Inventory, and Notifications services.
 
-    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+    1. Data Consistency: Detailed explanation of the Saga Pattern (Choreography vs. Orchestration) to handle cross-service distributed transactions and rollback logic during payment failure.
+    2. Event Backbone: Apache Kafka/RabbitMQ schema registry, dead-letter queues (DLQ), and idempotent event consumers.
+    3. Outbox Pattern: Implementation details of Transactional Outbox to guarantee event delivery without dual-write race conditions.
+    4. Disaster Recovery: Multi-region failover strategy, database replication, and handling out-of-order event consumption.
+
 - id: T3_005
   tier: complex
   category: algorithm_design
   expected_model: gpt-4o
   prompt: |
-    Design an efficient algorithm and analyze its complexity.
+    Design an efficient algorithm to process 1 billion log records stored across distributed S3 files (total size ~100 GB) and extract the top 100 most frequent IPv4 addresses using bounded memory (max 2 GB RAM).
 
-    Given one billion log records, find the top 100 most frequent IP addresses.
+    1. Detail a two-phase MapReduce / External Merge Sort / Count-Min Sketch / Min-Heap approach.
+    2. Provide full pseudocode or Python code for both stream-processing (approximate count using heavy hitters) and exact parallel computing methods.
+    3. Analyze time complexity, space complexity, and network I/O bottlenecks.
+    4. Explain how to handle skewness in data distribution (e.g., massive traffic spikes from a single IP).
+
 - id: T3_006
   tier: complex
   category: root_cause_analysis
   expected_model: gpt-4o
   prompt: |
-    Analyze the incident and determine the most likely root cause.
+    Investigate the following incident report and establish a fault tree analysis:
 
-    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+    Incident: Immediately following a rolling deployment of a Node.js microservice, p99 API latency increased from 40ms to 850ms, and container CPU usage rose by 80%. Database metrics (connection count, query latency, CPU) remained nominal. Memory usage shows a steady step-up staircase pattern without garbage collection drops.
+
+    1. Hypothesis Generation: Detail 3 high-probability root causes (e.g., event loop blocking due to synchronous JSON parsing/regex evaluation, memory leaks retaining context references, inefficient micro-task queue saturation).
+    2. Diagnostic Methodology: Specify exact CLI tools (`perf`, `node --prof`, heap dumps, Flame graphs) and telemetry commands required to isolate the issue.
+    3. Remediation Plan: Immediate mitigation steps (rollback/traffic shifting) and long-term architectural code-level prevention strategies.
+
 - id: T3_007
   tier: complex
   category: planning
   expected_model: gpt-4o
   prompt: |
-    Create a detailed implementation plan with milestones and risks.
+    Formulate an enterprise-grade, 6-month migration plan to transition a monolithic legacy Python (Django) application with a shared PostgreSQL database into domain-driven microservices.
 
-    Migrate a monolithic Python application to microservices over six months.
+    1. Domain Bounded Context Identification: Strategy for decoupling core domains using the Strangler Fig Pattern.
+    2. Database Deconstruction: Strategy for breaking shared database tables into database-per-service without disrupting live production traffic (Change Data Capture / Debezium).
+    3. Phase-by-Phase Roadmap: Gantt-style breakdown across 6 months including CI/CD pipeline setup, API Gateway routing (Kong/Envoy), and feature flagging.
+    4. Risk Matrix: Top 5 technical risks with severity, likelihood, and mitigation steps.
+
 - id: T3_008
   tier: complex
   category: creative_generation
   expected_model: gpt-4o
   prompt: |
-    Write a creative but technically accurate solution.
+    Write a hard science-fiction narrative centered around an autonomous spacecraft stranded in deep space due to a subtle race condition in its real-time operating system (RTOS) firmware during a thruster burn.
 
-    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+    1. Technical Rigor: Seamlessly integrate authentic computer science concepts—such as priority inversion, deadlocks, corrupted memory pointers, POSIX mutex locks, or watchdog timers.
+    2. Narrative Arc: Show the dialogue between the vessel's embedded AI debugging agent and the human flight engineer as they inspect core dumps and thread stack traces under time-critical conditions before orbital decay.
+    3. Climax & Resolution: Solved via a hot-patched kernel module or patch injected while maintaining safe system state.
+
 - id: T3_009
   tier: complex
   category: decision_making
   expected_model: gpt-4o
   prompt: |
-    Evaluate the options and recommend the best approach with trade-offs.
+    Conduct an architectural trade-off evaluation comparing PostgreSQL, MongoDB, and Apache Cassandra for a globally scaled real-time messaging application with 500 million monthly active users.
 
-    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+    1. Data Model & Schema Evolution: Handling nested messages, thread structures, and user profiles.
+    2. Scalability & Partitioning: Horizontal scaling capabilities, write throughput, auto-sharding vs. ring topology.
+    3. Consistency Guarantees: CAP theorem positioning, tunable consistency levels (e.g., Read/Write QUORUM vs. ACID compliance).
+    4. Operational Overhead: Maintenance complexity, multi-region replication, backup/restore procedures.
+    5. Final Recommendation: Provide a hybrid storage architecture recommendation.
+
 - id: T3_010
   tier: complex
   category: sql_generation
   expected_model: gpt-4o
   prompt: |
-    Generate SQL queries to solve the following business problem.
+    Write production-grade, optimized PostgreSQL queries for a complex analytical requirement.
 
-    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+    Schema:
+    - customers(id BIGINT PRIMARY KEY, name VARCHAR(255), created_at TIMESTAMP, region VARCHAR(50))
+    - orders(id BIGINT PRIMARY KEY, customer_id BIGINT REFERENCES customers(id), total NUMERIC(10,2), order_date TIMESTAMP, status VARCHAR(20))
+    - order_items(id BIGINT PRIMARY KEY, order_id BIGINT REFERENCES orders(id), product_id BIGINT, quantity INT, price NUMERIC(10,2))
+
+    Tasks:
+    1. Write an efficient query using Window Functions (`DENSE_RANK()`, `SUM() OVER`) to find the top 10 customers by total spend in each region for completed orders in 2025.
+    2. Include query optimization techniques: composite indexing recommendations (`CREATE INDEX...`), explain execution plan considerations (`EXPLAIN ANALYZE`), and demonstrate how to avoid sequence scans on large datasets.
+    3. Write a CTE-based recursive query to calculate month-over-month revenue growth rate per region.
+
 - id: T3_011
   tier: complex
   category: system_design
   expected_model: gpt-4o
   prompt: |
-    Design a scalable system for the following problem.
+    Design a distributed, highly scalable Notification System capable of delivering push notifications, SMS, and emails to over 500 million users worldwide.
 
-    Build a URL shortening service capable of handling 100 million requests per day.
+    1. Delivery Guarantees: Ensure at-least-once delivery, deduplication strategies, and prioritization (e.g., OTP vs. Marketing emails).
+    2. Provider Aggregation: Dynamic fallback routing between third-party providers (Twilio, SendGrid, FCM) during outages.
+    3. User Preference Engine: Low-latency evaluation of user quiet hours, channel preferences, and rate limits.
+    4. Scalability Architecture: Queue partitioning, worker pool autoscaling, and handling sudden batch spikes.
+
 - id: T3_012
   tier: complex
   category: code_review
   expected_model: gpt-4o
   prompt: |
-    Review the following code for correctness, performance, readability, and security.
+    Review the following Java code for a thread-safe singleton cache implementation:
 
-    def find_duplicates(nums):
-        result=[]
-        for i in nums:
-            if nums.count(i)>1:
-                result.append(i)
-        return result
+    ```java
+    public class CacheManager {
+        private static CacheManager instance;
+        private Map<String, Object> cache = new HashMap<>();
+
+        private CacheManager() {}
+
+        public static CacheManager getInstance() {
+            if (instance == null) {
+                instance = new CacheManager();
+            }
+            return instance;
+        }
+
+        public void put(String key, Object val) { cache.put(key, val); }
+        public Object get(String key) { return cache.get(key); }
+    }
+    ```
+
+    1. Identify all concurrency bugs, memory visibility issues, and race conditions under multithreaded environments.
+    2. Explain double-checked locking patterns, `volatile` keywords, or initialization-on-demand holder idiom solutions.
+    3. Provide a production-ready refactored version using `ConcurrentHashMap` and thread-safe idioms.
+
 - id: T3_013
   tier: complex
   category: debugging
   expected_model: gpt-4o
   prompt: |
-    Identify the bug, explain the root cause, and propose a fix.
+    Debug a memory leak issue in a production Kubernetes cluster running Java Spring Boot services. Containers are continuously killed by the OOMKiller (Exit Code 137).
 
-    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+    1. Explain the difference between JVM Heap memory and Metaspace/Native memory limits in Docker containers.
+    2. Detail how parameters like `-XX:MaxRAMPercentage`, off-heap native memory allocations (e.g., Netty Direct Memory), and thread thread-stack allocation contribute to container OOM.
+    3. Provide a step-by-step troubleshooting workflow using tools like `jcmd`, `jmap`, `gdb`, and Prometheus container metrics (`container_memory_working_set_bytes`).
+
 - id: T3_014
   tier: complex
   category: architecture
   expected_model: gpt-4o
   prompt: |
-    Design a production-ready software architecture.
+    Design a global multi-tenant SaaS authentication and access management platform (IAM) supporting OAuth2, OIDC, and SAML 2.0.
 
-    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+    1. Tenant Isolation: Architectural strategies for multi-tenant data partitioning (Row-Level Security vs. Schema per Tenant vs. DB per Tenant).
+    2. Security & Compliance: Token issuance (JWT vs. Opaque Tokens), public key rotation (JWKS), and protection against token theft.
+    3. Fine-Grained Authorization: Compare Role-Based Access Control (RBAC) vs. Attribute-Based Access Control (ABAC) vs. Relationship-Based Access Control (ReBAC like Google Zanzibar).
+
 - id: T3_015
   tier: complex
   category: algorithm_design
   expected_model: gpt-4o
   prompt: |
-    Design an efficient algorithm and analyze its complexity.
+    Design a distributed Rate Limiter service that enforces rate limits (e.g., 1,000 requests per minute per IP) across a cluster of 50 API Gateway instances.
 
-    Given one billion log records, find the top 100 most frequent IP addresses.
+    1. Algorithm Selection: Compare Token Bucket, Leaky Bucket, Fixed Window Counter, and Sliding Window Log algorithms.
+    2. Distributed Synchronization: Evaluate Redis Lua scripts, Sliding Window Counters with atomic increments, and local memory caching with asynchronous sync.
+    3. Edge Cases: Address clock drift across servers, race conditions, and graceful degradation during Redis cluster failures.
+
 - id: T3_016
   tier: complex
   category: root_cause_analysis
   expected_model: gpt-4o
   prompt: |
-    Analyze the incident and determine the most likely root cause.
+    Perform a post-mortem root cause analysis on a major outage where a MySQL database primary node crashed due to running out of storage space.
 
-    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+    1. Root Cause Analysis: Trace the escalation from excessive binary logging, unoptimized temp tables during massive analytical queries, and lack of automated log truncation.
+    2. Cascading Failures: Explain why read-replicas failed to promote cleanly due to replication lag and uncommitted long-running transactions.
+    3. Preventative Action Plan: Outline disk alerting policies, automated log rotation, transaction timeouts, and failover automation (e.g., Orchestrator/Patroni).
+
 - id: T3_017
   tier: complex
   category: planning
   expected_model: gpt-4o
   prompt: |
-    Create a detailed implementation plan with milestones and risks.
+    Create a technical roadmap for implementing a Zero Trust Architecture (ZTA) across an enterprise network with legacy on-prem services and multi-cloud Kubernetes deployments.
 
-    Migrate a monolithic Python application to microservices over six months.
+    1. Core Pillars: Address Identity, Device Trust, Network Segmentation (Microsegmentation), and Continuous Verification.
+    2. Service Mesh Integration: Plan for Istio/Linkerd mTLS implementation, SPIFFE/SPIRE identity attestation, and Envoy proxy sidecars.
+    3. Phased Rollout Plan: Detail a 4-phase rollout strategy spanning 12 months with minimal disruption to internal developer workflows.
+
 - id: T3_018
   tier: complex
   category: creative_generation
   expected_model: gpt-4o
   prompt: |
-    Write a creative but technically accurate solution.
+    Write an engaging technical blog post explaining the inner workings of B-Trees vs. LSM-Trees (Log-Structured Merge-trees) aimed at senior backend engineers.
 
-    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+    1. Visual & Conceptual Explanations: Explain write amplification, read amplification, space amplification, and compaction strategies (Leveled vs. Size-Tiered).
+    2. Real-World Engines: Compare InnoDB/Postgres (B-Tree) with RocksDB/Cassandra (LSM-Tree) with benchmark trade-offs.
+    3. Use Cases: Detail exact scenarios where a team should choose LSM over B-Tree or vice versa based on read/write workload profiles.
+
 - id: T3_019
   tier: complex
   category: decision_making
   expected_model: gpt-4o
   prompt: |
-    Evaluate the options and recommend the best approach with trade-offs.
+    Evaluate Serverless Functions (AWS Lambda/GCP Cloud Functions) vs. Provisioned Containers (Kubernetes/EKS) for a unpredictable, bursty machine learning inference API.
 
-    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+    1. Cost Analysis: Mathematical cost comparison across various baseline vs. peak RPS patterns.
+    2. Cold Start & Latency: Analysis of cold start initialization times, provisioning models, and GPU acceleration capabilities.
+    3. Developer Experience & Ops: CI/CD integration, observability, local debugging complexity, and vendor lock-in risk.
+
 - id: T3_020
   tier: complex
   category: sql_generation
   expected_model: gpt-4o
   prompt: |
-    Generate SQL queries to solve the following business problem.
+    Write advanced SQL to perform fraud detection analysis on a financial transactions table: `transactions(id, user_id, amount, merchant_id, timestamp, location_lat, location_lon)`.
 
-    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+    1. Write a query to flag rapid consecutive transactions made by the same user in different geographical locations where the physical distance between locations is impossible to cover given the elapsed time (Velocity Check).
+    2. Use PostgreSQL spatial functions (`ST_Distance`, `ST_MakePoint`) or Haversine formula CTEs combined with `LAG()` window functions.
+    3. Optimize the query for processing tens of millions of records daily.
+
 - id: T3_021
   tier: complex
   category: system_design
   expected_model: gpt-4o
   prompt: |
-    Design a scalable system for the following problem.
+    Design a real-time collaborative document editor (like Google Docs or Figma) supporting thousands of concurrent users editing a single canvas/document.
 
-    Build a URL shortening service capable of handling 100 million requests per day.
+    1. Concurrency Control: Compare Operational Transformation (OT) vs. Conflict-free Replicated Data Types (CRDTs).
+    2. Networking Protocol: WebSockets vs. WebRTC vs. HTTP Long-Polling for low-latency delta synchronization.
+    3. Persistence & Snapshotting: Archival strategy, version history maintenance, and restoring historical document states.
+    4. Offline First Support: Client-side storage, conflict resolution upon reconnection, and network partition tolerance.
+
 - id: T3_022
   tier: complex
   category: code_review
   expected_model: gpt-4o
   prompt: |
-    Review the following code for correctness, performance, readability, and security.
+    Review the following C++ code snippet for safety, performance, and modern C++ best practices:
 
-    def find_duplicates(nums):
-        result=[]
-        for i in nums:
-            if nums.count(i)>1:
-                result.append(i)
-        return result
+    ```cpp
+    char* process_data(char* input, int length) {
+        char* buffer = new char[1024];
+        strcpy(buffer, input);
+        for(int i = 0; i < length; i++) {
+            if(buffer[i] == 'a') buffer[i] = 'z';
+        }
+        return buffer;
+    }
+    ```
+
+    1. Identify all buffer overflow risks, memory leaks, raw pointer anti-patterns, and undefined behavior.
+    2. Modernize the code to modern C++ (C++20) using `std::string_view`, `std::unique_ptr` or `std::string`, and standard algorithms.
+    3. Discuss memory safety tools (AddressSanitizer, Valgrind) to catch these flaws during automated build pipelines.
+
 - id: T3_023
   tier: complex
   category: debugging
   expected_model: gpt-4o
   prompt: |
-    Identify the bug, explain the root cause, and propose a fix.
+    Troubleshoot a sudden high CPU usage spike in a Go microservice running in production.
 
-    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+    1. Profiling Workflow: Step-by-step instructions on utilizing `pprof` (CPU, goroutine, block profiles) on a live production instance.
+    2. Common Go Pitfalls: Analyze how runaway goroutine leaks, busy-waiting loops, unnecessary memory allocations triggering aggressive GC pauses cause CPU starvation.
+    3. Remediation: Provide corrected Go code demonstrating proper channel management, context cancellation (`context.WithTimeout`), and worker pool synchronization (`sync.WaitGroup`).
+
 - id: T3_024
   tier: complex
   category: architecture
   expected_model: gpt-4o
   prompt: |
-    Design a production-ready software architecture.
+    Architect a scalable, enterprise-grade Data Lakehouse platform integrating transactional capabilities over raw object storage (S3/GCS).
 
-    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+    1. Tech Stack Selection: Compare Apache Hudi, Delta Lake, and Apache Iceberg for transactional consistency (ACID) over parquet files.
+    2. Ingestion & Processing Pipeline: Real-time streaming (Apache Flink/Spark Streaming) vs. batch ETL pipelines.
+    3. Query Engine Architecture: Trino/Presto/DuckDB routing layer for low-latency ad-hoc SQL queries and BI reporting.
+    4. Data Governance: Role-Based Access Control (RBAC), data lineage, and automated schema evolution handling.
+
 - id: T3_025
   tier: complex
   category: algorithm_design
   expected_model: gpt-4o
   prompt: |
-    Design an efficient algorithm and analyze its complexity.
+    Design a spatial search algorithm and indexing structure to power a ride-sharing service (e.g., Uber) that matches riders with nearby drivers in sub-100ms.
 
-    Given one billion log records, find the top 100 most frequent IP addresses.
+    1. Spatial Indexing: Compare Geohash, Quadtrees, and Google S2 geometry libraries.
+    2. Dynamic Updates: Strategy for updating driver locations occurring every 4 seconds without locking spatial index structures.
+    3. Match Algorithm: Efficient $K$-Nearest Neighbors ($K$-NN) search algorithm combined with real-time routing distance estimates.
+
 - id: T3_026
   tier: complex
   category: root_cause_analysis
   expected_model: gpt-4o
   prompt: |
-    Analyze the incident and determine the most likely root cause.
+    Conduct a root cause analysis for an enterprise incident involving a silent data corruption bug in an e-commerce order ledger.
 
-    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+    1. Context: Floating-point precision errors accumulated across millions of micro-transactions over 6 months, causing financial reconciliation imbalances.
+    2. Analysis: Explain how using standard IEEE 754 floating-point types (`float`/`double`) instead of fixed-point/decimal representations (`DECIMAL`/`BigInteger`) causes rounding errors.
+    3. Remediation: Data patching SQL scripts, database schema migration strategies, and continuous automated auditing tests.
+
 - id: T3_027
   tier: complex
   category: planning
   expected_model: gpt-4o
   prompt: |
-    Create a detailed implementation plan with milestones and risks.
+    Develop a Disaster Recovery (DR) and Business Continuity Plan (BCP) for a global fintech platform processing online credit card payments.
 
-    Migrate a monolithic Python application to microservices over six months.
+    1. Metric Targets: Define precise Recovery Time Objectives (RTO) and Recovery Point Objectives (RPO) for Tier 0 core services.
+    2. Active-Active vs. Active-Passive Architectures: Multi-region setup across cloud providers with synchronous vs. asynchronous data replication.
+    3. Chaos Engineering & Testing: Plan for regular GameDay execution using Chaos Mesh / Gremlin to simulate region dropouts and split-brain scenarios.
+
 - id: T3_028
   tier: complex
   category: creative_generation
   expected_model: gpt-4o
   prompt: |
-    Write a creative but technically accurate solution.
+    Write a dramatic dialogue between an On-Call Site Reliability Engineer (SRE) and a Chief Technology Officer (CTO) during a cascading outage triggered by a BGP route leak.
 
-    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+    1. Technical Accuracy: Explain BGP path hijacking, route leaks, DNS failure modes, and edge router blackholing realistically.
+    2. High-Stakes Atmosphere: Capture the tension, communication protocols (Incident Commander roles), and decision-making trade-offs (e.g., pulling the plug on major regions vs. waiting for ISP resolution).
+
 - id: T3_029
   tier: complex
   category: decision_making
   expected_model: gpt-4o
   prompt: |
-    Evaluate the options and recommend the best approach with trade-offs.
+    Evaluate GraphQL vs. REST APIs vs. gRPC for an enterprise ecosystem with web, mobile, and internal microservice communication.
 
-    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+    1. Trade-off Matrix: Compare serialization efficiency (Protobuf vs. JSON), network overhead, schema enforcement, and developer tooling.
+    2. Performance: Network transport (HTTP/1.1 vs. HTTP/2 vs. HTTP/3), streaming support, and multiplexing capabilities.
+    3. Architectural Fit: Recommend the optimal protocol choice for each layer (Client-to-Backend vs. Service-to-Service).
+
 - id: T3_030
   tier: complex
   category: sql_generation
   expected_model: gpt-4o
   prompt: |
-    Generate SQL queries to solve the following business problem.
+    Write complex SQL queries for inventory allocation management under strict concurrency conditions.
 
-    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+    Schema:
+    - inventory(product_id INT PRIMARY KEY, available_stock INT, reserved_stock INT)
+    - reservations(id BIGINT PRIMARY KEY, user_id BIGINT, product_id INT, status VARCHAR(20), expires_at TIMESTAMP)
+
+    Tasks:
+    1. Write a thread-safe stored procedure/transactional SQL script using `SELECT ... FOR UPDATE` or optimistic locking (`WHERE version = x`) to reserve stock without race conditions.
+    2. Write an automated cleanup query that cancels expired reservations and safely returns stock back to `available_stock`.
+
 - id: T3_031
   tier: complex
   category: system_design
   expected_model: gpt-4o
   prompt: |
-    Design a scalable system for the following problem.
+    Design a Video Streaming Infrastructure (like Netflix or YouTube) capable of adaptive bitrate streaming (ABR) for millions of concurrent viewers globally.
 
-    Build a URL shortening service capable of handling 100 million requests per day.
+    1. Video Processing Pipeline: Transcoding workflow, codec selection (H.264, H.265/HEVC, AV1), and chunking (HLS / DASH protocols).
+    2. Content Delivery Network (CDN): Cache hierarchy (Origin, Edge, Mid-tier), origin shield, and dynamic manifest manipulation.
+    3. DRM & Security: Token authentication, widevine/fairplay digital rights management integration.
+
 - id: T3_032
   tier: complex
   category: code_review
   expected_model: gpt-4o
   prompt: |
-    Review the following code for correctness, performance, readability, and security.
+    Review the following JavaScript / TypeScript code for security vulnerabilities, specifically cross-site scripting (XSS) and state management bugs:
 
-    def find_duplicates(nums):
-        result=[]
-        for i in nums:
-            if nums.count(i)>1:
-                result.append(i)
-        return result
+    ```typescript
+    function RenderUserProfile({ userData }: { userData: any }) {
+      return (
+        <div className="profile">
+          <h2>{userData.name}</h2>
+          <div dangerouslySetInnerHTML={{ __html: userData.bio }} />
+          <a href={userData.websiteUrl}>Website</a>
+        </div>
+      );
+    }
+    ```
+
+    1. Identify all XSS injection vectors (`dangerouslySetInnerHTML`, unvalidated `href` javascript: schemes).
+    2. Provide DOMPurify sanitization strategies and strict type definitions.
+    3. Explain Content Security Policy (CSP) headers that mitigate these vulnerability vectors at the browser level.
+
 - id: T3_033
   tier: complex
   category: debugging
   expected_model: gpt-4o
   prompt: |
-    Identify the bug, explain the root cause, and propose a fix.
+    Investigate and fix an issue where a Kubernetes pod is stuck in `CrashLoopBackOff` with termination reason `OOMKilled`, but application logs show normal heap memory usage.
 
-    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+    1. Explain kernel-level cgroups (cgroups v1 vs v2) memory limits and how off-heap memory, thread stacks, or glibc memory fragmentation cause cgroup memory limits to trigger.
+    2. Provide diagnostics commands using `kubectl describe`, `crictl`, `dmesg`, and inspecting `/sys/fs/cgroup/memory`.
+    3. Suggest proper Kubernetes container resource requests and limits configurations.
+
 - id: T3_034
   tier: complex
   category: architecture
   expected_model: gpt-4o
   prompt: |
-    Design a production-ready software architecture.
+    Architect an AI/ML Model Training & Deployment Platform capable of dynamically scaling training jobs across multi-node GPU clusters (NVIDIA A100/H100).
 
-    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+    1. Model Training Orchestration: Kubeflow / Ray / Slurm integration, distributed data-parallel (DDP) synchronization strategy.
+    2. Feature Store Architecture: Real-time and batch feature ingestion (Feast) with low-latency serving layer.
+    3. Model Serving Pipeline: Triton Inference Server / vLLM integration, dynamic batching, model quantization (INT8/FP16), and canary deployments.
+
 - id: T3_035
   tier: complex
   category: algorithm_design
   expected_model: gpt-4o
   prompt: |
-    Design an efficient algorithm and analyze its complexity.
+    Design an algorithm for an autocomplete/typeahead search system that handles millions of prefix lookup queries per second with sub-10ms response times.
 
-    Given one billion log records, find the top 100 most frequent IP addresses.
+    1. Data Structure Selection: Compare Trie, Radix Tree, and Ternary Search Tree with prefix frequency scores stored at nodes.
+    2. Distributed Aggregations: Strategy for updating top-k trending search queries asynchronously using MapReduce and streaming algorithms.
+    3. Memory Optimization: Techniques to compress Tries in memory and cache top completions at client edge nodes.
+
 - id: T3_036
   tier: complex
   category: root_cause_analysis
   expected_model: gpt-4o
   prompt: |
-    Analyze the incident and determine the most likely root cause.
+    Analyze a post-mortem incident where an infrastructure-as-code (Terraform) change accidentally deleted a production database cluster during a routine deployment.
 
-    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+    1. Root Cause Analysis: Identify flaws in state management, missing deletion protection flags (`prevent_destroy`), and flawed CI/CD pipeline execution plans (`terraform apply` without lock checks).
+    2. Operational Safety: Design modern IaC review guardrails (Conftest, OPA policies, Atlantis automation, IAM permission boundary separations).
+    3. Disaster Recovery Execution: Evaluate the step-by-step restoration workflow from point-in-time snapshots and measure RPO impact.
+
 - id: T3_037
   tier: complex
   category: planning
   expected_model: gpt-4o
   prompt: |
-    Create a detailed implementation plan with milestones and risks.
+    Plan a company-wide DevSecOps transformation to integrate automated security scanning throughout the Software Development Life Cycle (SDLC).
 
-    Migrate a monolithic Python application to microservices over six months.
+    1. Pipeline Integration: SAST (Static Application Security Testing), DAST (Dynamic Testing), SCA (Software Composition Analysis), and Secret Scanning tools.
+    2. Shift-Left Security Strategy: Developer tooling (IDE plugins, pre-commit hooks) and vulnerability triage workflows.
+    3. Policy Enforcement: Automating breaking build rules, managing false positives, and tracking Mean Time To Remediate (MTTR) for high-severity CVEs.
+
 - id: T3_038
   tier: complex
   category: creative_generation
   expected_model: gpt-4o
   prompt: |
-    Write a creative but technically accurate solution.
+    Write an interactive troubleshooting guide formatted as a "Choose Your Own Adventure" story for junior SREs debugging a broken Kubernetes ingress/mesh network.
 
-    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+    1. Realistic Network Paths: Walk through Client -> Cloud Load Balancer -> Ingress Controller (Nginx) -> Service -> Pod CNI -> Application container.
+    2. Branching Decisions: Include decision trees for testing DNS resolution, inspecting iptables/eBPF rules, verifying TLS handshake certificates, and checking pod endpoint slices.
+
 - id: T3_039
   tier: complex
   category: decision_making
   expected_model: gpt-4o
   prompt: |
-    Evaluate the options and recommend the best approach with trade-offs.
+    Evaluate building an in-house authorization framework vs. adopting an open-source solution (Opa / OpenFGA) vs. a SaaS vendor (Auth0 / Okta Fine-Grained Authorization).
 
-    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+    1. Total Cost of Ownership (TCO): Development effort, operational maintenance, vendor pricing tiers, and scalability costs.
+    2. Compliance & Privacy: Data sovereignty (GDPR/HIPAA), self-hosting demands, and audit logging needs.
+    3. Latency Impact: Analyzing authorization checks on critical hot path API endpoints (sub-5ms SLA).
+
 - id: T3_040
   tier: complex
   category: sql_generation
   expected_model: gpt-4o
   prompt: |
-    Generate SQL queries to solve the following business problem.
+    Write optimized SQL queries for analyzing churn rate and customer lifetime value (LTV) in a SaaS subscription system.
 
-    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+    Schema: `subscriptions(id, user_id, plan_id, start_date, end_date, monthly_price, status)`
+
+    Tasks:
+    1. Calculate monthly recurring revenue (MRR) for each month over the past 2 years, broken down into New MRR, Expansion MRR, Contraction MRR, and Churned MRR.
+    2. Write a query calculating 30-day cohort retention rates using window functions and CTEs.
+
 - id: T3_041
   tier: complex
   category: system_design
   expected_model: gpt-4o
   prompt: |
-    Design a scalable system for the following problem.
+    Design a distributed, fault-tolerant job scheduler (like Cron or Quartz) that processes millions of scheduled tasks per minute across a cluster of nodes.
 
-    Build a URL shortening service capable of handling 100 million requests per day.
+    1. Task Execution Guarantees: At-least-once vs. Exactly-once execution, delayed task execution, and handling node crashes mid-task.
+    2. Data Partitioning & Storage: Ring buffer / Hashed Wheel Timer data structures, persistence strategies using database indexing or distributed logs.
+    3. Scalability: High concurrency handling, dynamic cluster membership, rebalancing scheduled jobs, and leader election protocols (Raft/Zookeeper).
+
 - id: T3_042
   tier: complex
   category: code_review
   expected_model: gpt-4o
   prompt: |
-    Review the following code for correctness, performance, readability, and security.
+    Perform a security and performance review of the following Rust code handling raw binary parsing:
 
-    def find_duplicates(nums):
-        result=[]
-        for i in nums:
-            if nums.count(i)>1:
-                result.append(i)
-        return result
+    ```rust
+    pub fn parse_packet(data: &[u8]) -> Result<Header, &'static str> {
+        if data.len() < 8 {
+            return Err("Packet too short");
+        }
+        let length = ((data[0] as u32) << 24) | ((data[1] as u32) << 16);
+        let payload = &data[8..8 + length as usize];
+        Ok(Header { length, payload: payload.to_vec() })
+    }
+    ```
+
+    1. Identify vector indexing out-of-bounds panics, integer overflow vectors, and unnecessary allocations (`to_vec()`).
+    2. Refactor the code utilizing safe Rust paradigms, zero-copy slicing, and standard conversion tools (`byteorder` crate or `from_be_bytes`).
+
 - id: T3_043
   tier: complex
   category: debugging
   expected_model: gpt-4o
   prompt: |
-    Identify the bug, explain the root cause, and propose a fix.
+    Diagnose a severe database performance issue where PostgreSQL queries experience unpredictable execution plan degradation due to stale optimizer statistics.
 
-    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+    1. Explain how `VACUUM` and `ANALYZE` work under the hood, autovacuum daemon tuning parameters, and statistics target limits.
+    2. Provide SQL queries to identify bloated tables, dead tuples, missing indexes, and out-of-date table statistics in `pg_stat_user_tables`.
+    3. Outline an emergency remediation plan when `EXPLAIN ANALYZE` shows bad estimates leading to sequential scans on billion-row tables.
+
 - id: T3_044
   tier: complex
   category: architecture
   expected_model: gpt-4o
   prompt: |
-    Design a production-ready software architecture.
+    Architect a real-time Fraud Detection System for financial transactions that evaluates incoming credit card swipes within 50ms.
 
-    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+    1. Architecture Blueprint: Hybrid approach combining real-time rule engine (Flink/Drools) with machine learning model inference (Triton/ONNX).
+    2. Feature Computation: Real-time sliding window aggregation (e.g., spending in the last 5 minutes) using Redis / Apache Pinot / Feast.
+    3. Resilience & Fallbacks: Fallback rules engine when ML model inference times out or degrades.
+
 - id: T3_045
   tier: complex
   category: algorithm_design
   expected_model: gpt-4o
   prompt: |
-    Design an efficient algorithm and analyze its complexity.
+    Design a memory-efficient algorithm to find the median element in an unbounded, continuous stream of floating-point numbers.
 
-    Given one billion log records, find the top 100 most frequent IP addresses.
+    1. Algorithm Selection: Compare Two-Heap Method (Min-Heap/Max-Heap), P-Square Algorithm for dynamic quantile estimation, and greenwald-khanna algorithm.
+    2. Detail time and space complexity for exact vs. approximate calculations.
+    3. Provide complete implementation in Python or C++ capable of handling dynamic window constraints.
+
 - id: T3_046
   tier: complex
   category: root_cause_analysis
   expected_model: gpt-4o
   prompt: |
-    Analyze the incident and determine the most likely root cause.
+    Perform a post-mortem analysis on a cascading DNS failure that caused an enterprise-wide application blackout.
 
-    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+    1. Incident Overview: Core DNS servers failed due to cache poisoning attacks combined with misconfigured TTL values and high negative caching TTL settings.
+    2. Escalation Chain: Explain how client retries flooded secondary DNS servers, leading to resource exhaustion, elevated packet drop rates, and global service timeouts.
+    3. Resolution Strategies: Implement DNSSEC, rate-limiting upstream resolvers, adjusting SOA TTL records, and redundant DNS infrastructure providers.
+
 - id: T3_047
   tier: complex
   category: planning
   expected_model: gpt-4o
   prompt: |
-    Create a detailed implementation plan with milestones and risks.
+    Create an engineering plan for implementing a multi-region Active-Active database infrastructure using AWS Aurora Global Database or CockroachDB.
 
-    Migrate a monolithic Python application to microservices over six months.
+    1. Data Consistency & Conflict Resolution: Handling write conflicts, read-after-write consistency, and cross-region replication latency.
+    2. Application Routing: Geo-DNS routing, latency-based routing, and transaction pinning to prevent cross-region network hops.
+    3. Failover Protocol: Automated failover procedure without data loss during primary cloud region failure.
+
 - id: T3_048
   tier: complex
   category: creative_generation
   expected_model: gpt-4o
   prompt: |
-    Write a creative but technically accurate solution.
+    Write a detailed architectural design document (RFC/ADR style) for introducing an Event-Driven Architecture into an existing monolithic legacy framework.
 
-    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+    1. RFC Formatting: Standard sections including Context, Status, Proposed Architecture, Trade-offs, Schema Management, and Rollout Strategy.
+    2. Technical Content: Focus on event versioning strategies, Schema Registry integration, and backwards-compatible consumer migrations.
+
 - id: T3_049
   tier: complex
   category: decision_making
   expected_model: gpt-4o
   prompt: |
-    Evaluate the options and recommend the best approach with trade-offs.
+    Evaluate modern observability platforms: Self-Hosted OpenTelemetry + Prometheus + Grafana + Tempo vs. Enterprise SaaS (Datadog / Dynatrace).
 
-    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+    1. Cost Modeling: Compute, storage, network egress, and ingestion volume pricing breakdown at scale (10 TB logs/metrics daily).
+    2. Operational Overhead: Maintenance costs, team overhead, scaling storage backends (Thanos/Cortex/ClickHouse).
+    3. Security & Compliance: Data redaction, PCI-DSS compliance, and vendor lock-in mitigation.
+
 - id: T3_050
   tier: complex
   category: sql_generation
   expected_model: gpt-4o
   prompt: |
-    Generate SQL queries to solve the following business problem.
+    Write SQL queries to analyze web traffic sessionization from clickstream data.
 
-    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+    Schema: `page_views(user_id, timestamp, page_url, referrer)`
+
+    Tasks:
+    1. Define a "session" as a sequence of page views where consecutive views occur within 30 minutes of each other using window functions (`LAG()`, `SUM() OVER`).
+    2. Calculate total sessions per user, average session duration, and the most common landing page for each session.
+
 - id: T3_051
   tier: complex
   category: system_design
   expected_model: gpt-4o
   prompt: |
-    Design a scalable system for the following problem.
+    Design a distributed Web Crawler capable of fetching, parsing, and indexing 1 billion web pages per week.
 
-    Build a URL shortening service capable of handling 100 million requests per day.
+    1. Crawl Architecture: URL Frontier design, priority queuing, politeness policies per domain, and handling robots.txt.
+    2. Content Deduplication: Exact deduplication (MD5/SHA-256) vs. near-duplicate detection using SimHash / MinHash.
+    3. Storage Architecture: Distributed key-value stores for web page documents, inverted indexes, and link graph extraction.
+
 - id: T3_052
   tier: complex
   category: code_review
   expected_model: gpt-4o
   prompt: |
-    Review the following code for correctness, performance, readability, and security.
+    Review the following Python snippet that implements multithreaded web scraping:
 
-    def find_duplicates(nums):
-        result=[]
-        for i in nums:
-            if nums.count(i)>1:
-                result.append(i)
-        return result
+    ```python
+    import threading, requests
+
+    urls = ["[https://example.com/api/](https://example.com/api/)" + str(i) for i in range(1000)]
+    threads = []
+
+    def fetch(url):
+        res = requests.get(url)
+        print(res.json())
+
+    for u in urls:
+        t = threading.Thread(target=fetch, args=(u,))
+        t.start()
+        threads.append(t)
+    ```
+
+    1. Explain resource exhaustion problems (spawning 1000 native OS threads, uncontrolled socket descriptors, GIL limitations).
+    2. Refactor using `asyncio` and `aiohttp` or a controlled worker thread pool (`ThreadPoolExecutor`).
+    3. Include proper timeout handling, retries with exponential backoff, and rate limiting.
+
 - id: T3_053
   tier: complex
   category: debugging
   expected_model: gpt-4o
   prompt: |
-    Identify the bug, explain the root cause, and propose a fix.
+    Debug an issue in a Kafka consumer group where consumers are constantly rebalancing, leading to message processing halts (stop-the-world effect).
 
-    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+    1. Root Cause Analysis: Explain the roles of `max.poll.interval.ms`, `max.poll.records`, and `session.timeout.ms` when message processing times exceed thresholds.
+    2. Troubleshooting: Inspecting Kafka lag metrics, consumer group state transitions, and thread dumps.
+    3. Remediation Strategy: Tuning consumer configs, decoupling message fetching from processing via thread pools, or implementing cooperative sticky assignors.
+
 - id: T3_054
   tier: complex
   category: architecture
   expected_model: gpt-4o
   prompt: |
-    Design a production-ready software architecture.
+    Architect a scalable search engine backend using Elasticsearch / OpenSearch cluster for tens of terabytes of unstructured text data.
 
-    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+    1. Index Design & Sharding: Calculating primary and replica shard counts, index lifecycle management (ILM), and rollover policies.
+    2. Performance Optimization: Bulk indexing optimizations, custom analyzer/tokenizer setup, and memory configuration (JVM heap limit vs. OS File System Cache).
+    3. High Availability: Multi-AZ cluster topology, master node quorum setups, and snapshot/restore procedures.
+
 - id: T3_055
   tier: complex
   category: algorithm_design
   expected_model: gpt-4o
   prompt: |
-    Design an efficient algorithm and analyze its complexity.
+    Design a Least Recently Used (LRU) Cache data structure with $O(1)$ time complexity for both `get` and `put` operations, supporting thread-safe operations.
 
-    Given one billion log records, find the top 100 most frequent IP addresses.
+    1. Data Structure Choice: Explain the combination of Doubly Linked Lists and Hash Maps.
+    2. Code Implementation: Provide a thread-safe implementation in Python, Java, or C++ incorporating generic types and explicit memory/pointer management.
+    3. Concurrency Optimization: Read/Write lock separation (`ReentrantReadWriteLock` or fine-grained lock striping) to maximize concurrent throughput.
+
 - id: T3_056
   tier: complex
   category: root_cause_analysis
   expected_model: gpt-4o
   prompt: |
-    Analyze the incident and determine the most likely root cause.
+    Perform a root cause analysis on a security failure where sensitive API keys were exposed in public GitHub repositories.
 
-    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+    1. Root Cause Identification: Inadequate `.gitignore` policies, local developer secret hardcoding, and lack of automated pre-commit secret scanning hooks.
+    2. Immediate Response Actions: Secret revocation protocols, automated token rolling, and auditing access logs for unauthorized utilization.
+    3. Long-Term Solutions: Secret management integration (HashiCorp Vault / AWS Secrets Manager), CI/CD secret injection, and git history scrubbing techniques.
+
 - id: T3_057
   tier: complex
   category: planning
   expected_model: gpt-4o
   prompt: |
-    Create a detailed implementation plan with milestones and risks.
+    Create a technical modernization strategy to migrate an old on-prem Monolithic .NET/Java application to cloud-native Kubernetes (EKS/GKE).
 
-    Migrate a monolithic Python application to microservices over six months.
+    1. Containerization Assessment: Converting stateful services to stateless, handling local disk dependencies, and externalizing configuration via ConfigMaps/Secrets.
+    2. Platform Infrastructure: Setting up CI/CD pipelines (ArgoCD/GitOps), ingress control, and telemetry integration.
+    3. Migration Steps: Rehosting, refactoring, dual-writing strategies, and cutover testing plans.
+
 - id: T3_058
   tier: complex
   category: creative_generation
   expected_model: gpt-4o
   prompt: |
-    Write a creative but technically accurate solution.
+    Write a technical post-mortem report (Blameless Post-Mortem format) for a major production outage caused by an unindexed foreign key in a database migration.
 
-    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+    1. Required Sections: Executive Summary, Timeline of Events, Root Cause, Impact, Corrective Actions.
+    2. Technical Detail: Detail how the table lock (`ACCESS EXCLUSIVE`) during schema update halted all incoming write operations and queued web requests until application worker pools starved.
+
 - id: T3_059
   tier: complex
   category: decision_making
   expected_model: gpt-4o
   prompt: |
-    Evaluate the options and recommend the best approach with trade-offs.
+    Evaluate WebSockets vs. Server-Sent Events (SSE) vs. HTTP Long-Polling for a real-time stock ticker dashboard application.
 
-    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+    1. Protocol Mechanics: Full-duplex vs. single-direction communication, overhead over TCP, and connection lifecycle.
+    2. Firewall & Proxy Compatibility: Behavior through HTTP proxies, load balancers, and CDN support.
+    3. Resource Efficiency: Server-side memory footprint per persistent client connection ($100k+$ concurrent users).
+
 - id: T3_060
   tier: complex
   category: sql_generation
   expected_model: gpt-4o
   prompt: |
-    Generate SQL queries to solve the following business problem.
+    Write advanced SQL queries for graph-like traversal using Recursive Common Table Expressions (CTEs).
 
-    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+    Schema: `employees(employee_id INT, manager_id INT, name VARCHAR(100), salary NUMERIC)`
+
+    Tasks:
+    1. Write a query to generate the complete organizational hierarchy tree for a given manager ID, including depth levels.
+    2. Calculate total cumulative salary expenditure for every manager (including their own salary plus all direct and indirect reports).
+
 - id: T3_061
   tier: complex
   category: system_design
   expected_model: gpt-4o
   prompt: |
-    Design a scalable system for the following problem.
+    Design a distributed, highly scalable ride-hailing dynamic pricing engine (Surge Pricing Engine).
 
-    Build a URL shortening service capable of handling 100 million requests per day.
+    1. Data Streams Processing: Real-time supply/demand computation using geo-spatial aggregations (H3/S2 spatial cells).
+    2. Low-Latency Inference: Computing dynamic price multipliers based on localized driver availability and ride request spikes.
+    3. Fail-Safe Operations: Guardrails against infinite price loops, fallback pricing models during network partitions, and auditability logging.
+
 - id: T3_062
   tier: complex
   category: code_review
   expected_model: gpt-4o
   prompt: |
-    Review the following code for correctness, performance, readability, and security.
+    Review the following Go code implementing a worker pool processing jobs:
 
-    def find_duplicates(nums):
-        result=[]
-        for i in nums:
-            if nums.count(i)>1:
-                result.append(i)
-        return result
+    ```go
+    func worker(jobs <-chan int, results chan<- int) {
+        for j := range jobs {
+            results <- j * 2
+        }
+    }
+
+    func main() {
+        jobs := make(chan int, 100)
+        results := make(chan int, 100)
+        for w := 1; w <= 3; w++ {
+            go worker(jobs, results)
+        }
+        for j := 1; j <= 5; j++ {
+            jobs <- j
+        }
+        // Missing channel closing and waitgroup handling
+        for a := 1; a <= 5; a++ {
+            fmt.Println(<-results)
+        }
+    }
+    ```
+
+    1. Identify deadlock risks, unclosed channels, and missing `sync.WaitGroup` goroutine synchronization patterns.
+    2. Refactor into clean, production-grade Go code with context cancellation support and error handling.
+
 - id: T3_063
   tier: complex
   category: debugging
   expected_model: gpt-4o
   prompt: |
-    Identify the bug, explain the root cause, and propose a fix.
+    Diagnose a performance issue where an Nginx reverse proxy returns intermittent `502 Bad Gateway` and `504 Gateway Timeout` errors under traffic spikes.
 
-    A FastAPI application returns HTTP 500 whenever concurrent requests exceed 100. Logs show intermittent database timeout errors.
+    1. Root Cause Analysis: Inspect Nginx `worker_connections`, `worker_processes`, upstream socket backlog buffer sizes, and epoll handling limits.
+    2. Linux Kernel Tuning: System parameters (`sysctl.conf`) such as `net.core.somaxconn`, `net.ipv4.tcp_max_syn_backlog`, and ephemeral port exhaustion limits (`ip_local_port_range`).
+    3. Remediation: Provide tuned configuration blocks for both `/etc/nginx/nginx.conf` and OS kernel properties.
+
 - id: T3_064
   tier: complex
   category: architecture
   expected_model: gpt-4o
   prompt: |
-    Design a production-ready software architecture.
+    Architect an enterprise API Gateway strategy for a financial organization with hundreds of internal microservices.
 
-    Design an event-driven e-commerce platform supporting orders, payments, inventory, and notifications.
+    1. Gateway Capabilities: Request routing, rate limiting, mutual TLS (mTLS) termination, JWT validation, and response caching.
+    2. Topology Selection: Centralized API Gateway cluster vs. Decentralized sidecar gateway topology (Service Mesh).
+    3. Governance & Security: Automated API spec (OpenAPI/Swagger) publishing, developer portals, and OWASP Top 10 API Security mitigation.
+
 - id: T3_065
   tier: complex
   category: algorithm_design
   expected_model: gpt-4o
   prompt: |
-    Design an efficient algorithm and analyze its complexity.
+    Design a distributed Unique ID Generator system (similar to Twitter Snowflake) capable of generating 100,000 unique numeric IDs per second with zero coordination overhead between nodes.
 
-    Given one billion log records, find the top 100 most frequent IP addresses.
+    1. ID Bit Structure: Breakdown of bit allocation (Timestamp, Datacenter ID, Worker ID, Sequence number).
+    2. Clock Drift Handling: Strategies for handling system clock skew/backwards time adjustments without generating duplicate IDs.
+    3. Scalability Analysis: Throughput bounds, lifespan of the generator before timestamp overflow, and performance comparisons with UUID v4.
+
 - id: T3_066
   tier: complex
   category: root_cause_analysis
   expected_model: gpt-4o
   prompt: |
-    Analyze the incident and determine the most likely root cause.
+    Conduct a root cause analysis on a security compromise where an attacker gained unauthorized access via Server-Side Request Forgery (SSRF) in a cloud environment.
 
-    After a deployment, API latency doubled and CPU usage increased by 80%. Database metrics remained unchanged.
+    1. Vulnerability Analysis: Explain how unvalidated user-supplied URLs allowed internal access to AWS Instance Metadata Service (IMDSv1) at `169.254.169.254` to extract IAM role credentials.
+    2. Mitigation Strategy: Implementing IMDSv2 (session-oriented token requests), egress firewall filtering, network isolation, and web application firewall rules.
+
 - id: T3_067
   tier: complex
   category: planning
   expected_model: gpt-4o
   prompt: |
-    Create a detailed implementation plan with milestones and risks.
+    Create an engineering strategy for migrating an enterprise data warehouse from Oracle / Teradata to Snowflake / BigQuery.
 
-    Migrate a monolithic Python application to microservices over six months.
+    1. Schema Migration: Translating proprietary SQL dialects, stored procedures, triggers, and indexes to cloud data warehouse equivalents.
+    2. Data Transfer Strategy: Initial batch load of historical data (petabyte-scale) vs. real-time continuous CDC synchronization pipelines.
+    3. Validation & Auditing: Automated data reconciliation frameworks ensuring exact data parity down to individual row records.
+
 - id: T3_068
   tier: complex
   category: creative_generation
   expected_model: gpt-4o
   prompt: |
-    Write a creative but technically accurate solution.
+    Write a technical comparison guide framed as a "Head-to-Head Debate" between two senior architects discussing Event Sourcing + CQRS vs. Traditional CRUD architectures.
 
-    Write a short science-fiction story where an AI debugging assistant saves a spacecraft.
+    1. Core Arguments: CQRS/Event Sourcing strengths (audit trail, temporal queries, domain model separation) vs. CRUD simplicity, developer learning curve, and lower operational complexity.
+    2. Concrete Examples: Use a Banking Account / Ledger system to contrast how operations differ in implementation, storage, and querying across both paradigms.
+
 - id: T3_069
   tier: complex
   category: decision_making
   expected_model: gpt-4o
   prompt: |
-    Evaluate the options and recommend the best approach with trade-offs.
+    Evaluate dynamic application deployment strategies: Blue/Green Deployments vs. Canary Releases vs. Shadow Deployments.
 
-    Choose between PostgreSQL, MongoDB, and Cassandra for a global messaging application.
+    1. Comparison Matrix: Setup complexity, infrastructure costs, traffic routing mechanisms, and risk reduction capabilities.
+    2. Rollback Mechanics: Time required to trigger instantaneous rollback upon defect detection.
+    3. Recommendation: Detail the ideal deployment strategy for a mission-critical billing API vs. a consumer recommendation engine.
+
 - id: T3_070
   tier: complex
   category: sql_generation
   expected_model: gpt-4o
   prompt: |
-    Generate SQL queries to solve the following business problem.
+    Write advanced SQL queries for e-commerce conversion funnel analysis.
 
-    Database tables: customers(id,name), orders(id,customer_id,total). Return the top 10 customers by total spending.
+    Schema: `user_events(event_id, user_id, event_type, timestamp)` where `event_type` includes 'page_view', 'add_to_cart', 'checkout_start', 'payment_success'.
+
+    Tasks:
+    1. Construct a funnel analysis query calculating the drop-off count and conversion rate percentage between each sequential step in the user funnel over a given date range.
+    2. Calculate the median time elapsed between `page_view` and `payment_success` for converting users.

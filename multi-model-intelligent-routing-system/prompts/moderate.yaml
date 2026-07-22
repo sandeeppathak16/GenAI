@@ -6,593 +6,537 @@ prompts:
   category: summarization
   expected_model: llama3
   prompt: |
-    Summarize the following content into five concise bullet points.
+    Summarize the following engineering meeting notes into exactly five concise, actionable bullet points focused on key decisions, risk mitigations, and execution phases.
 
     Meeting Notes:
-    The engineering team agreed to migrate services gradually, improve monitoring, document rollback procedures, and complete testing before production.
+    "The engineering team agreed to migrate backend services gradually over a 3-month timeline. We will prioritize improving Prometheus/Grafana observability upfront, strictly document automated rollback procedures for every release, and mandate end-to-end integration testing before releasing to production environments."
+
 - id: T2_002
   tier: moderate
   category: classification
   expected_model: llama3
   prompt: |
-    Classify the following text into one of the provided categories and explain your reasoning.
+    Classify the following customer query into one primary category and up to two secondary sub-categories. Provide a brief explanation for your choices.
 
-    Categories: Billing, Technical Support, Sales
+    Categories: [Billing, Technical Support, Sales, Account Management]
 
-    Text: I was charged twice for my subscription this month.
+    Text: "I was charged twice for my premium tier subscription this month after attempting to upgrade my account. Can someone refund the extra payment and verify my current access tier?"
+
 - id: T2_003
   tier: moderate
   category: sentiment_analysis
   expected_model: llama3
   prompt: |
-    Determine the sentiment of the following review and provide a confidence score.
+    Perform a granular sentiment analysis on the user review below. Break down the feedback into overall sentiment (Positive/Negative/Mixed/Neutral), aspect-based sentiment for each mentioned feature, and assign a confidence score ($0.0$ to $1.0$).
 
-    Review: "The product quality is excellent, but delivery was slower than expected."
+    Review: "The new UI design and speed are absolutely fantastic, but the recent app update broken offline sync completely, causing me to lose work. Support was helpful though."
+
 - id: T2_004
   tier: moderate
   category: structured_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following document and return the findings as structured JSON.
+    Extract key performance indicators from the financial text below and output valid JSON matching this schema:
+    `{"metrics": [{"name": string, "change_percentage": float, "trend": "positive"|"negative"}]}`
 
     Quarterly Report:
-    Revenue increased by 12%, expenses by 5%, and customer churn decreased by 3%.
+    "Q3 results showed strong top-line momentum with revenue expanding by 12.5% YoY, while operating expenses were contained to a 4.2% increase. Strategic customer success initiatives helped reduce monthly churn by 2.8%."
+
 - id: T2_005
   tier: moderate
   category: comparison
   expected_model: llama3
   prompt: |
-    Compare the following two documents and highlight the key differences.
+    Compare the security posture, operational overhead, and user friction implications of the two password policy specifications below.
 
-    Document A: Password must be at least 8 characters.
-    Document B: Password must be at least 12 characters and include a symbol.
+    Specification A: "Passwords must be at least 8 characters in length and updated every 90 days."
+    Specification B: "Passwords must be at least 14 characters, check against compromised password lists (HaveIBeenPwned API), and mandate 2FA without forced periodic expiration."
+
 - id: T2_006
   tier: moderate
   category: requirement_extraction
   expected_model: llama3
   prompt: |
-    Extract the functional and non-functional requirements from the following specification.
+    Analyze the project spec below and extract requirements into two categorized lists: Functional Requirements (system behaviors) and Non-Functional Requirements (security, performance, usability).
 
-    Build a mobile banking app with biometric login, offline balance viewing, and encrypted communication.
+    Specification:
+    "Develop a cross-platform mobile banking application enabling users to log in using biometric authentication (FaceID/Fingerprint), view account balances offline, transfer funds, and guarantee end-to-end payload encryption with sub-200ms API response times."
+
 - id: T2_007
   tier: moderate
   category: resume_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following resume and identify the candidate's strengths and weaknesses.
+    Evaluate the candidate summary below for a Lead DevOps/SRE position. Highlight key strengths, potential skill gaps relative to high-scale infrastructure, and suggest 3 technical interview questions.
 
-    Candidate has 5 years of Python, FastAPI, AWS, Docker, and Kubernetes experience.
+    Candidate Profile:
+    "Senior Software Engineer with 5 years of hands-on experience utilizing Python, FastAPI, AWS core services, Docker containerization, and basic Kubernetes deployment management."
+
 - id: T2_008
   tier: moderate
   category: risk_analysis
   expected_model: llama3
   prompt: |
-    Identify the potential risks in the following project plan.
+    Identify potential project risks from the scenario below. Categorize each risk by Impact (High/Medium/Low) and Probability (High/Medium/Low), and provide a concrete mitigation strategy for each.
 
-    Project depends on a single vendor, has a two-week testing window, and no documented rollback strategy.
+    Scenario:
+    "A mission-critical core platform migration relies on a single third-party vendor software, grants a tight 2-week testing window prior to Black Friday traffic spikes, and lacks a documented rollback strategy."
+
 - id: T2_009
   tier: moderate
   category: review_analysis
   expected_model: llama3
   prompt: |
-    Analyze the customer reviews and identify common themes.
+    Synthesize the customer feedback highlights below into common user themes. Create an actionable roadmap with prioritized fixes for the product team.
 
-    Reviews mention fast performance, confusing UI, responsive support, and occasional crashes.
+    Feedback Summary:
+    "Users frequently praise the fast query engine and responsive support team. However, widespread complaints cite a steep UI learning curve, confusing navigation menus, and intermittent mobile app crashes during background file sync."
+
 - id: T2_010
   tier: moderate
   category: topic_classification
   expected_model: llama3
   prompt: |
-    Classify the document into the most appropriate business domain.
+    Classify the given technical excerpt into its primary business/engineering domain (e.g., Cloud Infrastructure, Data Engineering, Application Security, IT Governance) and tag key technology keywords.
 
-    Document discusses Kubernetes deployment, CI/CD pipelines, observability, and cloud infrastructure.
+    Excerpt:
+    "We configured automated Kubernetes cluster autoscaling, established GitOps CI/CD pipelines via ArgoCD, enabled OpenTelemetry observability, and enforced infrastructure compliance using Terraform policies."
+
 - id: T2_011
   tier: moderate
   category: summarization
   expected_model: llama3
   prompt: |
-    Summarize the following content into five concise bullet points.
+    Summarize the key architectural decisions from the team meeting notes below for an executive engineering dashboard.
 
-    Meeting Notes:
-    The engineering team agreed to migrate services gradually, improve monitoring, document rollback procedures, and complete testing before production.
+    Notes:
+    "The team agreed to adopt an asynchronous event-driven pattern using Apache Kafka to decouple order processing from inventory updates. Legacy REST polling will be deprecated by Q4."
+
 - id: T2_012
   tier: moderate
   category: classification
   expected_model: llama3
   prompt: |
-    Classify the following text into one of the provided categories and explain your reasoning.
+    Categorize the incoming IT service desk ticket into Priority (P1-Critical to P4-Low) and Assignment Group (Database, Networking, Frontend, Security).
 
-    Categories: Billing, Technical Support, Sales
+    Ticket: "Users across the EU region are unable to log in; the authentication service throws HTTP 504 gateway timeout errors continuously."
 
-    Text: I was charged twice for my subscription this month.
 - id: T2_013
   tier: moderate
   category: sentiment_analysis
   expected_model: llama3
   prompt: |
-    Determine the sentiment of the following review and provide a confidence score.
+    Analyze the sentiment shift in this user account cancellation survey. Identify the primary driver of churn and user emotional tone.
 
-    Review: "The product quality is excellent, but delivery was slower than expected."
+    Survey Response: "I loved using this tool for the first six months. However, recent price hikes combined with unresolved bugs in export features made it impossible to justify the cost."
+
 - id: T2_014
   tier: moderate
   category: structured_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following document and return the findings as structured JSON.
+    Convert the technical incident report below into a structured JSON object containing `incident_id`, `affected_services`, `root_cause`, `downtime_minutes`, and `action_items`.
 
-    Quarterly Report:
-    Revenue increased by 12%, expenses by 5%, and customer churn decreased by 3%.
+    Report: "Incident #4092: Checkout pipeline degraded for 45 minutes due to database connection pool exhaustion caused by an unindexed query in the discount verification service. Action item: add composite index and scale connection pool limits."
+
 - id: T2_015
   tier: moderate
   category: comparison
   expected_model: llama3
   prompt: |
-    Compare the following two documents and highlight the key differences.
+    Compare REST API architecture vs. GraphQL for a mobile application development context. Detail differences in network bandwidth efficiency, client fetching flexibility, and caching implementation complexity.
 
-    Document A: Password must be at least 8 characters.
-    Document B: Password must be at least 12 characters and include a symbol.
 - id: T2_016
   tier: moderate
   category: requirement_extraction
   expected_model: llama3
   prompt: |
-    Extract the functional and non-functional requirements from the following specification.
+    Extract business rules and data validation logic from the policy text below.
 
-    Build a mobile banking app with biometric login, offline balance viewing, and encrypted communication.
+    Policy: "Orders exceeding $500 require manual manager approval unless placed by a Verified Enterprise Customer. Discount codes cannot be stacked with seasonal promotional pricing."
+
 - id: T2_017
   tier: moderate
   category: resume_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following resume and identify the candidate's strengths and weaknesses.
+    Review this resume extract for a Senior Frontend Developer position and rate technical alignment (1-10) against modern React/TypeScript best practices.
 
-    Candidate has 5 years of Python, FastAPI, AWS, Docker, and Kubernetes experience.
+    Extract: "4 years experience building web applications using jQuery, Bootstrap, Vanilla JavaScript, CSS Modules, and basic React class components."
+
 - id: T2_018
   tier: moderate
   category: risk_analysis
   expected_model: llama3
   prompt: |
-    Identify the potential risks in the following project plan.
+    Perform a operational risk assessment on adopting an unmaintained open-source library for cryptographic functions in a commercial application.
 
-    Project depends on a single vendor, has a two-week testing window, and no documented rollback strategy.
 - id: T2_019
   tier: moderate
   category: review_analysis
   expected_model: llama3
   prompt: |
-    Analyze the customer reviews and identify common themes.
+    Analyze a set of app store reviews for an e-commerce application. Identify the top 3 usability pain points and rank them by business impact on conversion rates.
 
-    Reviews mention fast performance, confusing UI, responsive support, and occasional crashes.
 - id: T2_020
   tier: moderate
   category: topic_classification
   expected_model: llama3
   prompt: |
-    Classify the document into the most appropriate business domain.
+    Classify the following blog post title and snippet into target audience persona and technical depth level (Beginner/Intermediate/Advanced).
 
-    Document discusses Kubernetes deployment, CI/CD pipelines, observability, and cloud infrastructure.
+    Snippet: "Deep Dive into Linux Kernel eBPF filters for high-performance network packet filtering without kernel module recompilation."
+
 - id: T2_021
   tier: moderate
   category: summarization
   expected_model: llama3
   prompt: |
-    Summarize the following content into five concise bullet points.
+    Summarize a complex 3-page vendor contract into a 1-page executive memo covering pricing structure, SLA commitments, termination clauses, and data ownership rights.
 
-    Meeting Notes:
-    The engineering team agreed to migrate services gradually, improve monitoring, document rollback procedures, and complete testing before production.
 - id: T2_022
   tier: moderate
   category: classification
   expected_model: llama3
   prompt: |
-    Classify the following text into one of the provided categories and explain your reasoning.
+    Classify the following customer emails into intent buckets: `Feature Request`, `Bug Report`, `Account Access`, or `Sales Inquiry`.
 
-    Categories: Billing, Technical Support, Sales
+    Email text: "Where can I find the button to export user analytics to CSV? If it doesn't exist, please consider adding it in the next release."
 
-    Text: I was charged twice for my subscription this month.
 - id: T2_023
   tier: moderate
   category: sentiment_analysis
   expected_model: llama3
   prompt: |
-    Determine the sentiment of the following review and provide a confidence score.
+    Determine the sentiment tone of an internal employee feedback submission regarding a newly announced Return-To-Office policy.
 
-    Review: "The product quality is excellent, but delivery was slower than expected."
 - id: T2_024
   tier: moderate
   category: structured_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following document and return the findings as structured JSON.
+    Parse the plain-text server logs below into a JSON array containing `timestamp`, `ip_address`, `http_method`, `status_code`, and `response_time_ms`.
 
-    Quarterly Report:
-    Revenue increased by 12%, expenses by 5%, and customer churn decreased by 3%.
+    Log line: `2026-07-22T10:14:32Z - 192.168.1.45 - GET /api/v1/products 200 42ms`
+
 - id: T2_025
   tier: moderate
   category: comparison
   expected_model: llama3
   prompt: |
-    Compare the following two documents and highlight the key differences.
+    Compare SQL (Relational) vs. NoSQL (Document-based) databases for a new social media messaging feed feature. Evaluate schema flexibility, query complexity, and horizontal scaling capabilities.
 
-    Document A: Password must be at least 8 characters.
-    Document B: Password must be at least 12 characters and include a symbol.
 - id: T2_026
   tier: moderate
   category: requirement_extraction
   expected_model: llama3
   prompt: |
-    Extract the functional and non-functional requirements from the following specification.
+    Extract security compliance requirements (such as GDPR/HIPAA mandates) mentioned in the software design brief below.
 
-    Build a mobile banking app with biometric login, offline balance viewing, and encrypted communication.
 - id: T2_027
   tier: moderate
   category: resume_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following resume and identify the candidate's strengths and weaknesses.
+    Evaluate a candidate's resume for a Data Engineer position based on experience with SQL, Python, Apache Spark, Snowflake, and Airflow. Identify key career milestones and missing requirements.
 
-    Candidate has 5 years of Python, FastAPI, AWS, Docker, and Kubernetes experience.
 - id: T2_028
   tier: moderate
   category: risk_analysis
   expected_model: llama3
   prompt: |
-    Identify the potential risks in the following project plan.
+    Analyze the technical and financial risks of delaying a database minor-version update that includes critical security patches.
 
-    Project depends on a single vendor, has a two-week testing window, and no documented rollback strategy.
 - id: T2_029
   tier: moderate
   category: review_analysis
   expected_model: llama3
   prompt: |
-    Analyze the customer reviews and identify common themes.
+    Extract competitive intelligence insights from product reviews of a competitor's SaaS platform. Highlight their most praised features and customer pain points.
 
-    Reviews mention fast performance, confusing UI, responsive support, and occasional crashes.
 - id: T2_030
   tier: moderate
   category: topic_classification
   expected_model: llama3
   prompt: |
-    Classify the document into the most appropriate business domain.
+    Categorize a list of research papers into machine learning sub-fields: `Computer Vision`, `Natural Language Processing`, `Reinforcement Learning`, or `Robotics`.
 
-    Document discusses Kubernetes deployment, CI/CD pipelines, observability, and cloud infrastructure.
 - id: T2_031
   tier: moderate
   category: summarization
   expected_model: llama3
   prompt: |
-    Summarize the following content into five concise bullet points.
+    Summarize a post-incident retrospective document into key root causes, timeline highlights, and immediate preventative action items.
 
-    Meeting Notes:
-    The engineering team agreed to migrate services gradually, improve monitoring, document rollback procedures, and complete testing before production.
 - id: T2_032
   tier: moderate
   category: classification
   expected_model: llama3
   prompt: |
-    Classify the following text into one of the provided categories and explain your reasoning.
+    Classify the given legal agreement clauses into standard categories: `Liability`, `Confidentiality`, `Intellectual Property`, or `Termination`.
 
-    Categories: Billing, Technical Support, Sales
-
-    Text: I was charged twice for my subscription this month.
 - id: T2_033
   tier: moderate
   category: sentiment_analysis
   expected_model: llama3
   prompt: |
-    Determine the sentiment of the following review and provide a confidence score.
+    Analyze sentiment across earnings call transcript excerpts to evaluate market sentiment toward executive team leadership confidence.
 
-    Review: "The product quality is excellent, but delivery was slower than expected."
 - id: T2_034
   tier: moderate
   category: structured_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following document and return the findings as structured JSON.
+    Extract unstructured customer address details from plain-text emails into a standardized JSON format (`street`, `city`, `state`, `postal_code`, `country`).
 
-    Quarterly Report:
-    Revenue increased by 12%, expenses by 5%, and customer churn decreased by 3%.
 - id: T2_035
   tier: moderate
   category: comparison
   expected_model: llama3
   prompt: |
-    Compare the following two documents and highlight the key differences.
+    Compare Server-Side Rendering (SSR) vs. Client-Side Rendering (CSR) for a modern content marketing website in terms of SEO benefits, initial page load speeds, and hosting infrastructure costs.
 
-    Document A: Password must be at least 8 characters.
-    Document B: Password must be at least 12 characters and include a symbol.
 - id: T2_036
   tier: moderate
   category: requirement_extraction
   expected_model: llama3
   prompt: |
-    Extract the functional and non-functional requirements from the following specification.
+    Extract clear user stories (As a... I want to... So that...) from a raw feature proposal document.
 
-    Build a mobile banking app with biometric login, offline balance viewing, and encrypted communication.
 - id: T2_037
   tier: moderate
   category: resume_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following resume and identify the candidate's strengths and weaknesses.
+    Compare two software developer resumes side-by-side for a Full-Stack Web Engineer role and provide a comparative matrix detailing candidate suitability.
 
-    Candidate has 5 years of Python, FastAPI, AWS, Docker, and Kubernetes experience.
 - id: T2_038
   tier: moderate
   category: risk_analysis
   expected_model: llama3
   prompt: |
-    Identify the potential risks in the following project plan.
+    Identify supply chain security risks associated with utilizing third-party open-source packages in modern CI/CD software pipelines.
 
-    Project depends on a single vendor, has a two-week testing window, and no documented rollback strategy.
 - id: T2_039
   tier: moderate
   category: review_analysis
   expected_model: llama3
   prompt: |
-    Analyze the customer reviews and identify common themes.
+    Categorize net promoter score (NPS) survey comments into Promoters, Passives, and Detractors, providing qualitative theme tagging for each group.
 
-    Reviews mention fast performance, confusing UI, responsive support, and occasional crashes.
 - id: T2_040
   tier: moderate
   category: topic_classification
   expected_model: llama3
   prompt: |
-    Classify the document into the most appropriate business domain.
+    Determine whether a security advisories feed entry corresponds to `Network Security`, `Application Security`, `IAM/Authentication`, or `Physical Security`.
 
-    Document discusses Kubernetes deployment, CI/CD pipelines, observability, and cloud infrastructure.
 - id: T2_041
   tier: moderate
   category: summarization
   expected_model: llama3
   prompt: |
-    Summarize the following content into five concise bullet points.
+    Summarize a lengthy release note document into an external end-user release summary vs. an internal developer changelog.
 
-    Meeting Notes:
-    The engineering team agreed to migrate services gradually, improve monitoring, document rollback procedures, and complete testing before production.
 - id: T2_042
   tier: moderate
   category: classification
   expected_model: llama3
   prompt: |
-    Classify the following text into one of the provided categories and explain your reasoning.
+    Classify cloud infrastructure resource costs (AWS billing line items) into operational cost categories: Compute, Storage, Networking, or Database Managed Services.
 
-    Categories: Billing, Technical Support, Sales
-
-    Text: I was charged twice for my subscription this month.
 - id: T2_043
   tier: moderate
   category: sentiment_analysis
   expected_model: llama3
   prompt: |
-    Determine the sentiment of the following review and provide a confidence score.
+    Determine public sentiment on social media posts regarding a brand's new sustainability campaign initiative.
 
-    Review: "The product quality is excellent, but delivery was slower than expected."
 - id: T2_044
   tier: moderate
   category: structured_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following document and return the findings as structured JSON.
+    Convert tabular data contained in plain text into a normalized CSV schema and a matching JSON array.
 
-    Quarterly Report:
-    Revenue increased by 12%, expenses by 5%, and customer churn decreased by 3%.
 - id: T2_045
   tier: moderate
   category: comparison
   expected_model: llama3
   prompt: |
-    Compare the following two documents and highlight the key differences.
+    Compare Docker containerization vs. Virtual Machines (VMs) across resource utilization, isolation security guarantees, and startup overhead times.
 
-    Document A: Password must be at least 8 characters.
-    Document B: Password must be at least 12 characters and include a symbol.
 - id: T2_046
   tier: moderate
   category: requirement_extraction
   expected_model: llama3
   prompt: |
-    Extract the functional and non-functional requirements from the following specification.
+    Extract integration endpoints, protocol specs, and authentication methods from a third-party payment gateway documentation guide.
 
-    Build a mobile banking app with biometric login, offline balance viewing, and encrypted communication.
 - id: T2_047
   tier: moderate
   category: resume_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following resume and identify the candidate's strengths and weaknesses.
+    Analyze a resume to identify potential red flags, such as unexplained employment gaps or rapid job-hopping trends, while summarizing core expertise.
 
-    Candidate has 5 years of Python, FastAPI, AWS, Docker, and Kubernetes experience.
 - id: T2_048
   tier: moderate
   category: risk_analysis
   expected_model: llama3
   prompt: |
-    Identify the potential risks in the following project plan.
+    Evaluate the data loss and downtime risks associated with running single-node database instances in production environments without active-passive read-replicas.
 
-    Project depends on a single vendor, has a two-week testing window, and no documented rollback strategy.
 - id: T2_049
   tier: moderate
   category: review_analysis
   expected_model: llama3
   prompt: |
-    Analyze the customer reviews and identify common themes.
+    Evaluate app review sentiment before and after a major redesign update to measure initial user churn friction vs. feature adoption satisfaction.
 
-    Reviews mention fast performance, confusing UI, responsive support, and occasional crashes.
 - id: T2_050
   tier: moderate
   category: topic_classification
   expected_model: llama3
   prompt: |
-    Classify the document into the most appropriate business domain.
+    Classify software bug report tickets based on architectural component impact: `Database Layer`, `Middleware API`, `Frontend UI`, or `Third-Party Integration`.
 
-    Document discusses Kubernetes deployment, CI/CD pipelines, observability, and cloud infrastructure.
 - id: T2_051
   tier: moderate
   category: summarization
   expected_model: llama3
   prompt: |
-    Summarize the following content into five concise bullet points.
+    Summarize key takeaways from a technical whitepaper on Zero Trust Architecture into an executive briefing document.
 
-    Meeting Notes:
-    The engineering team agreed to migrate services gradually, improve monitoring, document rollback procedures, and complete testing before production.
 - id: T2_052
   tier: moderate
   category: classification
   expected_model: llama3
   prompt: |
-    Classify the following text into one of the provided categories and explain your reasoning.
+    Classify incoming customer communications by urgency status: `Immediate Escalation`, `Standard SLA (24h)`, or `Informational / No Response Needed`.
 
-    Categories: Billing, Technical Support, Sales
-
-    Text: I was charged twice for my subscription this month.
 - id: T2_053
   tier: moderate
   category: sentiment_analysis
   expected_model: llama3
   prompt: |
-    Determine the sentiment of the following review and provide a confidence score.
+    Identify customer frustration markers in live chat support transcripts to flag sessions needing supervisor intervention.
 
-    Review: "The product quality is excellent, but delivery was slower than expected."
 - id: T2_054
   tier: moderate
   category: structured_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following document and return the findings as structured JSON.
+    Extract data entities (Organizations, Dates, Money Amounts, Technical Tools) from an IT audit report and output them in structured JSON format.
 
-    Quarterly Report:
-    Revenue increased by 12%, expenses by 5%, and customer churn decreased by 3%.
 - id: T2_055
   tier: moderate
   category: comparison
   expected_model: llama3
   prompt: |
-    Compare the following two documents and highlight the key differences.
+    Compare Git branching strategies (GitFlow vs. Trunk-Based Development) in terms of release speed, merge conflict risk, and developer onboarding effort.
 
-    Document A: Password must be at least 8 characters.
-    Document B: Password must be at least 12 characters and include a symbol.
 - id: T2_056
   tier: moderate
   category: requirement_extraction
   expected_model: llama3
   prompt: |
-    Extract the functional and non-functional requirements from the following specification.
+    Extract acceptance criteria from a product requirement document (PRD) for an online payment processing workflow.
 
-    Build a mobile banking app with biometric login, offline balance viewing, and encrypted communication.
 - id: T2_057
   tier: moderate
   category: resume_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following resume and identify the candidate's strengths and weaknesses.
+    Match a software engineer’s profile against a senior job description and highlight key missing certifications or domain competencies.
 
-    Candidate has 5 years of Python, FastAPI, AWS, Docker, and Kubernetes experience.
 - id: T2_058
   tier: moderate
   category: risk_analysis
   expected_model: llama3
   prompt: |
-    Identify the potential risks in the following project plan.
+    Perform a risk analysis on migrating enterprise data from an on-premises data center to a public cloud provider.
 
-    Project depends on a single vendor, has a two-week testing window, and no documented rollback strategy.
 - id: T2_059
   tier: moderate
   category: review_analysis
   expected_model: llama3
   prompt: |
-    Analyze the customer reviews and identify common themes.
+    Analyze customer churn survey comments to uncover top missing features compared to market competitors.
 
-    Reviews mention fast performance, confusing UI, responsive support, and occasional crashes.
 - id: T2_060
   tier: moderate
   category: topic_classification
   expected_model: llama3
   prompt: |
-    Classify the document into the most appropriate business domain.
+    Categorize software documentation articles into distinct documentation types: `Quickstart Tutorial`, `API Reference`, `Conceptual Overview`, or `Troubleshooting Guide`.
 
-    Document discusses Kubernetes deployment, CI/CD pipelines, observability, and cloud infrastructure.
 - id: T2_061
   tier: moderate
   category: summarization
   expected_model: llama3
   prompt: |
-    Summarize the following content into five concise bullet points.
+    Summarize a 10-page compliance report on ISO 27001 standards into core non-conformities and recommended corrective actions.
 
-    Meeting Notes:
-    The engineering team agreed to migrate services gradually, improve monitoring, document rollback procedures, and complete testing before production.
 - id: T2_062
   tier: moderate
   category: classification
   expected_model: llama3
   prompt: |
-    Classify the following text into one of the provided categories and explain your reasoning.
+    Classify user feedback into usability categories: `Visual Design`, `Navigation`, `Performance/Speed`, or `Feature Completeness`.
 
-    Categories: Billing, Technical Support, Sales
-
-    Text: I was charged twice for my subscription this month.
 - id: T2_063
   tier: moderate
   category: sentiment_analysis
   expected_model: llama3
   prompt: |
-    Determine the sentiment of the following review and provide a confidence score.
+    Analyze product review sentiment trends across a 12-month timeline to evaluate brand perception following product updates.
 
-    Review: "The product quality is excellent, but delivery was slower than expected."
 - id: T2_064
   tier: moderate
   category: structured_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following document and return the findings as structured JSON.
+    Parse unstructured invoice text into structured JSON containing `invoice_number`, `vendor_name`, `line_items`, `tax_amount`, and `total_due`.
 
-    Quarterly Report:
-    Revenue increased by 12%, expenses by 5%, and customer churn decreased by 3%.
 - id: T2_065
   tier: moderate
   category: comparison
   expected_model: llama3
   prompt: |
-    Compare the following two documents and highlight the key differences.
+    Compare automated unit testing vs. end-to-end integration testing regarding execution speed, maintenance overhead, and reliability in finding edge-case bugs.
 
-    Document A: Password must be at least 8 characters.
-    Document B: Password must be at least 12 characters and include a symbol.
 - id: T2_066
   tier: moderate
   category: requirement_extraction
   expected_model: llama3
   prompt: |
-    Extract the functional and non-functional requirements from the following specification.
+    Extract data retention, archival, and deletion policies from an enterprise terms of service document.
 
-    Build a mobile banking app with biometric login, offline balance viewing, and encrypted communication.
 - id: T2_067
   tier: moderate
   category: resume_analysis
   expected_model: llama3
   prompt: |
-    Analyze the following resume and identify the candidate's strengths and weaknesses.
+    Evaluate a candidate's suitability for an Engineering Manager role based on team leadership metrics, technical history, and project management scope.
 
-    Candidate has 5 years of Python, FastAPI, AWS, Docker, and Kubernetes experience.
 - id: T2_068
   tier: moderate
   category: risk_analysis
   expected_model: llama3
   prompt: |
-    Identify the potential risks in the following project plan.
+    Identify operational and financial risks of deploying microservice software releases without feature flag toggles or automated rollback monitors.
 
-    Project depends on a single vendor, has a two-week testing window, and no documented rollback strategy.
 - id: T2_069
   tier: moderate
   category: review_analysis
   expected_model: llama3
   prompt: |
-    Analyze the customer reviews and identify common themes.
+    Analyze customer support review data to identify recurring agent training gaps and product usability bottlenecks.
 
-    Reviews mention fast performance, confusing UI, responsive support, and occasional crashes.
 - id: T2_070
   tier: moderate
   category: topic_classification
   expected_model: llama3
   prompt: |
-    Classify the document into the most appropriate business domain.
-
-    Document discusses Kubernetes deployment, CI/CD pipelines, observability, and cloud infrastructure.
+    Classify developer forum posts into primary technology domains: `Frontend Web`, `Backend Systems`, `DevOps/Infrastructure`, or `Data Science/AI`.

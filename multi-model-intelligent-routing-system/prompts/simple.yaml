@@ -6,29 +6,19 @@ prompts:
     category: extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Extract the following information from the email and return JSON.
+      Extract the order details from the email below and return a valid JSON object with the keys "order_id", "issue", and "requested_action".
 
       Email:
       Hello,
-
       My order #12345 hasn't arrived yet. Please deliver it tomorrow afternoon.
-
-      Thanks,
-      John
-
-      Return:
-      {
-        "order_id": "",
-        "issue": "",
-        "requested_action": ""
-      }
+      Thanks, John
 
   - id: T1_002
     tier: simple
     category: formatting
     expected_model: gpt-4o-mini
     prompt: |
-      Convert the following CSV into a markdown table.
+      Convert the following comma-separated data into a clean Markdown table with headers.
 
       Name,Department,Experience
       Alice,Engineering,5
@@ -40,29 +30,29 @@ prompts:
     category: qa
     expected_model: gpt-4o-mini
     prompt: |
-      Answer the question using only the provided context.
+      Answer the question directly using ONLY the facts provided in the context below. Do not extrapolate.
 
       Context:
       Python was created by Guido van Rossum and first released in 1991.
 
       Question:
-      Who created Python?
+      Who created Python and in what year was it released?
 
   - id: T1_004
     tier: simple
     category: translation
     expected_model: gpt-4o-mini
     prompt: |
-      Translate the following sentence into French.
+      Translate the following sentence into formal French:
 
-      "Good morning. I hope you're having a wonderful day."
+      "Good morning. I hope you are having a wonderful day."
 
   - id: T1_005
     tier: simple
     category: grammar
     expected_model: gpt-4o-mini
     prompt: |
-      Correct the grammar of the following paragraph without changing its meaning.
+      Fix all grammatical and spelling errors in the following sentence without changing its core meaning:
 
       "He don't likes playing football because he have injured his knee."
 
@@ -71,7 +61,7 @@ prompts:
     category: json_conversion
     expected_model: gpt-4o-mini
     prompt: |
-      Convert the following employee information into JSON.
+      Convert the following employee details into a valid JSON object using keys in snake_case format.
 
       Employee Name: Sarah
       Department: HR
@@ -83,19 +73,19 @@ prompts:
     category: entity_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Extract all people, organizations, and locations from the following text.
+      Identify all named entities from the text below and categorize them into a JSON structure with keys "people", "organizations", and "locations".
 
+      Text:
       "Alice from Microsoft visited Google's office in New York with Bob."
-
-      Return JSON.
 
   - id: T1_008
     tier: simple
     category: date_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Extract all dates mentioned below and normalize them into YYYY-MM-DD format.
+      Extract all dates mentioned in the text and convert them into standard ISO format (YYYY-MM-DD).
 
+      Text:
       "The project starts on August 5, 2026 and finishes on September 12, 2026."
 
   - id: T1_009
@@ -103,36 +93,32 @@ prompts:
     category: email_subject
     expected_model: gpt-4o-mini
     prompt: |
-      Generate a concise email subject line for the following email.
+      Generate three concise, professional email subject line options (under 8 words each) for the message below.
 
-      Hi Team,
-
-      Our production deployment has been postponed until Friday because additional testing is required.
-
-      Thanks.
+      Email:
+      Hi Team, Our production deployment has been postponed until Friday because additional testing is required. Thanks.
 
   - id: T1_010
     tier: simple
     category: keyword_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Extract the five most important keywords from the following paragraph.
+      Extract exactly 5 key terms or short phrases from the paragraph below, returned as a comma-separated list.
 
-      Artificial Intelligence is transforming industries by automating repetitive tasks,
-      improving decision making through predictive analytics, and enabling more
-      personalized customer experiences.
+      Text:
+      Artificial Intelligence is transforming industries by automating repetitive tasks, improving decision making through predictive analytics, and enabling more personalized customer experiences.
 
   - id: T1_011
     tier: simple
     category: extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Extract the invoice number, customer name, and total amount from the following invoice text.
+      Extract the invoice number, customer name, total amount, and due date from the text below into a JSON object.
 
-      Invoice:
+      Invoice Text:
       Invoice No: INV-1011
-      Customer: Customer 11
-      Total: $111.50
+      Customer: Acme Corp
+      Total Amount: $1,111.50
       Due Date: 2026-08-12
 
   - id: T1_012
@@ -140,12 +126,12 @@ prompts:
     category: formatting
     expected_model: gpt-4o-mini
     prompt: |
-      Convert the following bullet list into a markdown table.
+      Format the raw test results below into a sorted Markdown table (highest score first).
 
-      Name,Score
-      Alice,82
-      Bob,72
-      Charlie,92
+      Alice: 82
+      Bob: 72
+      Charlie: 92
+      David: 88
 
   - id: T1_013
     tier: simple
@@ -153,80 +139,100 @@ prompts:
     expected_model: gpt-4o-mini
     prompt: |
       Context:
-      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan, standing at 3,776 meters.
 
       Question:
-      What is the capital of Japan?
+      What is the capital of Japan and how tall is Mount Fuji?
 
   - id: T1_014
     tier: simple
     category: translation
     expected_model: gpt-4o-mini
     prompt: |
-      Translate "Thank you for your assistance." into Spanish.
+      Translate the following phrase into polite Spanish:
+
+      "Thank you for your assistance with this matter."
+
   - id: T1_015
     tier: simple
     category: grammar
     expected_model: gpt-4o-mini
     prompt: |
-      Correct: "She dont know where are the keys."
+      Correct the grammar and word order in the sentence below:
+
+      "She dont know where are the keys."
+
   - id: T1_016
     tier: simple
     category: json_conversion
     expected_model: gpt-4o-mini
     prompt: |
-      Employee: Employee 16
-      ID: EMP-2016
-      Department: Engineering
+      Convert the product listing below into JSON format with numerical values represented as numbers.
+
+      Product: Wireless Headphones
+      SKU: WHD-2026
+      Price: 99.99
+      In Stock: true
 
   - id: T1_017
     tier: simple
     category: entity_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+      Extract all company names and cities mentioned in the sentence below.
+
+      Sentence:
+      "Alice from Microsoft met Bob at Amazon headquarters in Seattle before flying to San Francisco."
+
   - id: T1_018
     tier: simple
     category: date_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+      Parse the schedule snippet below and list all dates in YYYY-MM-DD format.
+
+      Snippet:
+      "Initial meeting on July 20, 2026, design review on July 28th, and follow-up on August 2, 2026."
+
   - id: T1_019
     tier: simple
     category: keyword_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+      Extract 4 core technical tags from this text:
+
+      "Cloud computing enables scalable infrastructure, process automation, distributed microservices, and robust data security."
+
   - id: T1_020
     tier: simple
     category: email_subject
     expected_model: gpt-4o-mini
     prompt: |
-      Email: Production deployment has been delayed until Monday due to testing.
+      Draft a urgent subject line for this operational update:
+
+      "The primary database server will undergo emergency maintenance tonight at 11 PM EST. Expect 15 minutes of downtime."
+
   - id: T1_021
     tier: simple
     category: extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Extract the invoice number, customer name, and total amount from the following invoice text.
+      Extract the shipping tracking number and carrier name from the message below and return a JSON object.
 
-      Invoice:
-      Invoice No: INV-1021
-      Customer: Customer 21
-      Total: $121.50
-      Due Date: 2026-08-22
+      Message:
+      "Your order has shipped via FedEx! Tracking number: 9876543210. Expected delivery is Thursday."
 
   - id: T1_022
     tier: simple
     category: formatting
     expected_model: gpt-4o-mini
     prompt: |
-      Convert the following bullet list into a markdown table.
+      Convert this unformatted key-value text into a clean 2-column Markdown table:
 
-      Name,Score
-      Alice,72
-      Bob,82
-      Charlie,87
+      Host: 192.168.1.1
+      Port: 8080
+      Protocol: HTTPS
+      Status: Active
 
   - id: T1_023
     tier: simple
@@ -234,80 +240,93 @@ prompts:
     expected_model: gpt-4o-mini
     prompt: |
       Context:
-      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+      Photosynthesis is the process used by plants to convert light energy into chemical energy. The main outputs are glucose and oxygen.
 
       Question:
-      What is the capital of Japan?
+      What are the main outputs of photosynthesis according to the text?
 
   - id: T1_024
     tier: simple
     category: translation
     expected_model: gpt-4o-mini
     prompt: |
-      Translate "Thank you for your assistance." into Spanish.
+      Translate the sentence below into conversational German:
+
+      "Could you please tell me where the nearest train station is?"
+
   - id: T1_025
     tier: simple
     category: grammar
     expected_model: gpt-4o-mini
     prompt: |
-      Correct: "She dont know where are the keys."
+      Correct all punctuation and capitalization errors in this sentence:
+
+      "yesterday we went to the park, but it started raining so we came home early"
+
   - id: T1_026
     tier: simple
     category: json_conversion
     expected_model: gpt-4o-mini
     prompt: |
-      Employee: Employee 26
-      ID: EMP-2026
-      Department: Engineering
+      Convert this flight itinerary into a JSON format containing `flight_number`, `departure_city`, `arrival_city`, and `gate`.
+
+      Flight: UA452 | From: Chicago | To: Miami | Gate: B12
 
   - id: T1_027
     tier: simple
     category: entity_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+      Extract all monetary amounts and currency names from the text below:
+
+      "The initial grant was $50,000 USD, with an additional €20,000 allocated for European operations."
+
   - id: T1_028
     tier: simple
     category: date_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+      Extract relative time references from the statement and convert them into relative duration terms (e.g., "in 3 days").
+
+      Statement:
+      "The task was submitted 2 days ago, reviewed yesterday, and will be finalized tomorrow."
+
   - id: T1_029
     tier: simple
     category: keyword_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+      List the primary concepts mentioned in this sentence as bullet points:
+
+      "DevOps practices combine software development and IT operations to shorten the development lifecycle and provide continuous delivery."
+
   - id: T1_030
     tier: simple
     category: email_subject
     expected_model: gpt-4o-mini
     prompt: |
-      Email: Production deployment has been delayed until Monday due to testing.
+      Write a friendly email subject line announcing a team lunch scheduled for Friday.
+
   - id: T1_031
     tier: simple
     category: extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Extract the invoice number, customer name, and total amount from the following invoice text.
+      Extract the user's name, email, and phone number from the contact signature below as a JSON object.
 
-      Invoice:
-      Invoice No: INV-1031
-      Customer: Customer 31
-      Total: $131.50
-      Due Date: 2026-08-04
+      Signature:
+      Best regards,
+      Elena Rostova | Senior Recruiter
+      Email: elena.r@example.com | Tel: +1-555-0199
 
   - id: T1_032
     tier: simple
     category: formatting
     expected_model: gpt-4o-mini
     prompt: |
-      Convert the following bullet list into a markdown table.
+      Reformat the JSON array below into an HTML unordered list (`<ul><li>...</li></ul>`):
 
-      Name,Score
-      Alice,82
-      Bob,62
-      Charlie,82
+      ["Requirement Gathering", "System Design", "Implementation", "Testing"]
 
   - id: T1_033
     tier: simple
@@ -315,80 +334,94 @@ prompts:
     expected_model: gpt-4o-mini
     prompt: |
       Context:
-      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+      The HTTP status code 404 indicates that the server cannot find the requested resource. Code 500 indicates an internal server error.
 
       Question:
-      What is the capital of Japan?
+      What does a 404 HTTP status code mean?
 
   - id: T1_034
     tier: simple
     category: translation
     expected_model: gpt-4o-mini
     prompt: |
-      Translate "Thank you for your assistance." into Spanish.
+      Translate the following phrase into Italian:
+
+      "Welcome to our hotel. Please let us know if you need anything."
+
   - id: T1_035
     tier: simple
     category: grammar
     expected_model: gpt-4o-mini
     prompt: |
-      Correct: "She dont know where are the keys."
+      Correct the subject-verb agreement in the sentence below:
+
+      "The list of new items are available on the website."
+
   - id: T1_036
     tier: simple
     category: json_conversion
     expected_model: gpt-4o-mini
     prompt: |
-      Employee: Employee 36
-      ID: EMP-2036
-      Department: Engineering
+      Convert these server metrics into a JSON structure:
+
+      CPU Usage: 45%
+      Memory Available: 8GB
+      Uptime: 99.9%
+      Status: Healthy
 
   - id: T1_037
     tier: simple
     category: entity_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+      Extract programming languages mentioned in the following bio text:
+
+      "Devin is a full-stack engineer proficient in TypeScript, Python, Rust, and Go."
+
   - id: T1_038
     tier: simple
     category: date_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+      Extract the expiration date from the text and output it as YYYY-MM:
+
+      "Your subscription card ending in 4011 expires on 11/28."
+
   - id: T1_039
     tier: simple
     category: keyword_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+      Extract 3 main topic keywords from this short update:
+
+      "We are migrating our monolith database to Amazon DynamoDB to improve write availability and scale horizontally."
+
   - id: T1_040
     tier: simple
     category: email_subject
     expected_model: gpt-4o-mini
     prompt: |
-      Email: Production deployment has been delayed until Monday due to testing.
+      Generate a professional subject line requesting a 15-minute introductory meeting with a prospective client.
+
   - id: T1_041
     tier: simple
     category: extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Extract the invoice number, customer name, and total amount from the following invoice text.
+      Extract the meeting time, room name, and host name from this calendar event description:
 
-      Invoice:
-      Invoice No: INV-1041
-      Customer: Customer 41
-      Total: $141.50
-      Due Date: 2026-08-14
+      "Team Sync hosted by Sarah Jenkins at 2:30 PM EST in Conference Room B."
 
   - id: T1_042
     tier: simple
     category: formatting
     expected_model: gpt-4o-mini
     prompt: |
-      Convert the following bullet list into a markdown table.
+      Convert these raw log lines into a clean ASCII table format with columns `TIMESTAMP`, `LEVEL`, and `MESSAGE`.
 
-      Name,Score
-      Alice,72
-      Bob,72
-      Charlie,92
+      2026-07-22 10:00:01 INFO System started
+      2026-07-22 10:02:15 WARN Memory usage high
+      2026-07-22 10:05:00 ERROR Database connection lost
 
   - id: T1_043
     tier: simple
@@ -396,80 +429,92 @@ prompts:
     expected_model: gpt-4o-mini
     prompt: |
       Context:
-      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+      Docker packages applications into containers that include all dependencies, ensuring consistency across environments.
 
       Question:
-      What is the capital of Japan?
+      What benefit does Docker provide regarding software dependencies?
 
   - id: T1_044
     tier: simple
     category: translation
     expected_model: gpt-4o-mini
     prompt: |
-      Translate "Thank you for your assistance." into Spanish.
+      Translate the following phrase into Japanese (Romaji or Kanji/Kana):
+
+      "Where is the nearest pharmacy?"
+
   - id: T1_045
     tier: simple
     category: grammar
     expected_model: gpt-4o-mini
     prompt: |
-      Correct: "She dont know where are the keys."
+      Correct the dangling modifier in the sentence below:
+
+      "Walking down the street, the trees were beautiful."
+
   - id: T1_046
     tier: simple
     category: json_conversion
     expected_model: gpt-4o-mini
     prompt: |
-      Employee: Employee 46
-      ID: EMP-2046
-      Department: Engineering
+      Convert this user profile summary into valid JSON:
+
+      Username: dev_guru
+      Role: Administrator
+      Permissions: ["read", "write", "delete"]
+      Active: Yes
 
   - id: T1_047
     tier: simple
     category: entity_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+      Extract all geographic regions or continent names from this sentence:
+
+      "Our software nodes are deployed across North America, Europe, and Asia-Pacific regions."
+
   - id: T1_048
     tier: simple
     category: date_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+      Extract the timestamp and timezone offset from the string below:
+
+      "Event recorded at 2026-07-22T14:30:00+02:00 on primary edge cluster."
+
   - id: T1_049
     tier: simple
     category: keyword_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+      Extract the 3 primary security concepts mentioned here:
+
+      "Implement multi-factor authentication, practice least-privilege access control, and turn on end-to-end encryption."
+
   - id: T1_050
     tier: simple
     category: email_subject
     expected_model: gpt-4o-mini
     prompt: |
-      Email: Production deployment has been delayed until Monday due to testing.
+      Write an email subject line informing customers about a scheduled software system update.
+
   - id: T1_051
     tier: simple
     category: extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Extract the invoice number, customer name, and total amount from the following invoice text.
+      Extract the discount code, percentage off, and expiration date from the promotional text below into JSON:
 
-      Invoice:
-      Invoice No: INV-1051
-      Customer: Customer 51
-      Total: $151.50
-      Due Date: 2026-08-24
+      "Use promo code SUMMER25 at checkout to receive 25% off your total purchase! Offer expires on August 31, 2026."
 
   - id: T1_052
     tier: simple
     category: formatting
     expected_model: gpt-4o-mini
     prompt: |
-      Convert the following bullet list into a markdown table.
+      Convert this Python dictionary literal into valid YAML format:
 
-      Name,Score
-      Alice,82
-      Bob,82
-      Charlie,87
+      `{"app": "frontend", "replicas": 3, "env": "production"}`
 
   - id: T1_053
     tier: simple
@@ -477,80 +522,92 @@ prompts:
     expected_model: gpt-4o-mini
     prompt: |
       Context:
-      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+      Git is a distributed version control system created by Linus Torvalds in 2005.
 
       Question:
-      What is the capital of Japan?
+      Who created Git and when?
 
   - id: T1_054
     tier: simple
     category: translation
     expected_model: gpt-4o-mini
     prompt: |
-      Translate "Thank you for your assistance." into Spanish.
+      Translate the following notification message into Portuguese:
+
+      "Your payment was processed successfully. Thank you for your business!"
+
   - id: T1_055
     tier: simple
     category: grammar
     expected_model: gpt-4o-mini
     prompt: |
-      Correct: "She dont know where are the keys."
+      Fix the misuse of "their/there/they're" in this sentence:
+
+      "There going to bring their equipment over to they're team table."
+
   - id: T1_056
     tier: simple
     category: json_conversion
     expected_model: gpt-4o-mini
     prompt: |
-      Employee: Employee 56
-      ID: EMP-2056
-      Department: Engineering
+      Convert this API error message into a structured JSON payload:
+
+      Error Code: ERR_403 | Message: Access Denied | Timestamp: 1721650000
 
   - id: T1_057
     tier: simple
     category: entity_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+      Extract all URL endpoints and protocol names from the passage:
+
+      "Send POST requests via HTTPS to https://api.example.com/v1/auth to obtain a token."
+
   - id: T1_058
     tier: simple
     category: date_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+      Extract all days of the week mentioned in the text below:
+
+      "Our offices are open Monday through Friday, with special emergency support on Saturday."
+
   - id: T1_059
     tier: simple
     category: keyword_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+      Identify 4 core performance metrics listed in this sentence:
+
+      "Monitor system throughput, latency, error rates, and resource utilization."
+
   - id: T1_060
     tier: simple
     category: email_subject
     expected_model: gpt-4o-mini
     prompt: |
-      Email: Production deployment has been delayed until Monday due to testing.
+      Create a subject line for a bug report submitted to an open-source library maintainer.
+
   - id: T1_061
     tier: simple
     category: extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Extract the invoice number, customer name, and total amount from the following invoice text.
+      Extract the job title, department, and salary range from the job posting snippet below into JSON:
 
-      Invoice:
-      Invoice No: INV-1061
-      Customer: Customer 61
-      Total: $161.50
-      Due Date: 2026-08-06
+      "We are hiring a Senior Data Analyst for our Growth Marketing department. Salary range: $110,000 - $130,000 USD."
 
   - id: T1_062
     tier: simple
     category: formatting
     expected_model: gpt-4o-mini
     prompt: |
-      Convert the following bullet list into a markdown table.
+      Convert this list of bullet points into a single numbered sequence ordered chronologically:
 
-      Name,Score
-      Alice,72
-      Bob,62
-      Charlie,82
+      * Post-release monitoring
+      * Code implementation
+      * Architecture review
+      * Production deployment
 
   - id: T1_063
     tier: simple
@@ -558,53 +615,71 @@ prompts:
     expected_model: gpt-4o-mini
     prompt: |
       Context:
-      The capital of Japan is Tokyo. Mount Fuji is the tallest mountain in Japan.
+      Kubernetes is an open-source container orchestration system for automating application deployment, scaling, and management.
 
       Question:
-      What is the capital of Japan?
+      What three main functions does Kubernetes automate?
 
   - id: T1_064
     tier: simple
     category: translation
     expected_model: gpt-4o-mini
     prompt: |
-      Translate "Thank you for your assistance." into Spanish.
+      Translate the sentence into Mandarin Chinese (Simplified characters):
+
+      "Please sign in with your email address and password."
+
   - id: T1_065
     tier: simple
     category: grammar
     expected_model: gpt-4o-mini
     prompt: |
-      Correct: "She dont know where are the keys."
+      Correct the run-on sentence below using appropriate punctuation or conjunctions:
+
+      "The server crashed we had to restart the service manually."
+
   - id: T1_066
     tier: simple
     category: json_conversion
     expected_model: gpt-4o-mini
     prompt: |
-      Employee: Employee 66
-      ID: EMP-2066
-      Department: Engineering
+      Convert this database connection configuration snippet into a valid JSON object:
+
+      Host: db.internal.net
+      Port: 5432
+      Database: production_v2
+      SSL: true
 
   - id: T1_067
     tier: simple
     category: entity_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Alice from Microsoft met Bob at Amazon headquarters in Seattle.
+      Extract the job roles/titles mentioned in the paragraph below:
+
+      "The project team consists of a Product Manager, two Backend Engineers, a QA Specialist, and a UX Designer."
+
   - id: T1_068
     tier: simple
     category: date_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Meeting on July 20, 2026 and follow-up on August 2, 2026.
+      Extract the quarter and fiscal year mentioned in this sentence:
+
+      "Financial projections indicate strong revenue growth for Q3 of Fiscal Year 2026."
+
   - id: T1_069
     tier: simple
     category: keyword_extraction
     expected_model: gpt-4o-mini
     prompt: |
-      Cloud computing enables scalable infrastructure, automation, distributed systems, security, and cost optimization.
+      Extract 3 key operational benefits from the text below:
+
+      "Adopting microservices improves fault isolation, enables independent team deployments, and allows granular scaling."
+
   - id: T1_070
     tier: simple
     category: email_subject
     expected_model: gpt-4o-mini
     prompt: |
-      Email: Production deployment has been delayed until Monday due to testing.
+      Write a clear, brief subject line for a password reset confirmation email.

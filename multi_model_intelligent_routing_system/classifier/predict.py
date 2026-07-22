@@ -1,7 +1,7 @@
 import joblib
 import pandas as pd
 
-from feature_extractor import FeatureExtractor
+from classifier.feature_extractor import FeatureExtractor
 
 
 class PromptClassifier:

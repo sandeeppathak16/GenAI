@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
+from pydantic import BaseModel
 
 
 class ModelProvider(str, Enum):
@@ -35,3 +36,7 @@ class ModelResponse:
     cost: float
     provider: str
     model: str
+
+
+class CompletionRequest(BaseModel):
+    prompt: str

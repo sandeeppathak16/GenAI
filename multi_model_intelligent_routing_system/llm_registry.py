@@ -1,6 +1,6 @@
+from classifier.predict import PromptClassifier
 from model import ModelConfig, ModelProvider, QualityTier
 
-from model import ModelConfig, ModelProvider, QualityTier
 
 MODEL_REGISTRY = {
     "gpt-4o-mini": ModelConfig(
@@ -33,3 +33,25 @@ MODEL_REGISTRY = {
         quality_tier=QualityTier.HIGH,
     ),
 }
+
+
+class Router:
+
+    def __init__(self):
+        self.classifier = PromptClassifier()
+
+    def route(self, prompt: str):
+        tier = self.classifier.predict(prompt)
+
+        match tier:
+            case "simple":
+                return MODEL_REGISTRY["gpt-4o-mini"]
+
+            case "moderate":
+                return MODEL_REGISTRY["llama3"]
+
+            case "complex":
+                return MODEL_REGISTRY["gpt-4o"]
+
+            case _:
+                raise ValueError(f"Unknown tier: {tier}")

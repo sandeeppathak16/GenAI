@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from database import database
+from database.db import database
 from multi_model_intelligent_routing_system.api import router as router1
 
 

@@ -2,7 +2,7 @@ from time import perf_counter
 
 from langchain_ollama import ChatOllama
 
-from model import ModelConfig, ModelProvider, ModelResponse
+from .model import ModelConfig, ModelProvider, ModelResponse
 
 
 class RequestHandler:

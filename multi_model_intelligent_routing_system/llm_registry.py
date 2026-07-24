@@ -1,5 +1,5 @@
-from classifier.predict import PromptClassifier
-from model import ModelConfig, ModelProvider, QualityTier
+from .classifier.predict import PromptClassifier
+from .model import ModelConfig, ModelProvider, QualityTier
 
 
 MODEL_REGISTRY = {

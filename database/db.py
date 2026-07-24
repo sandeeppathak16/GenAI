@@ -5,6 +5,11 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
+from sqlalchemy.orm import DeclarativeBase
+
+
+class Base(DeclarativeBase):
+    pass
 
 
 class Database:
@@ -24,7 +29,10 @@ class Database:
         )
 
     async def connect(self) -> None:
-        pass
+        from . import models
+
+        async with self._engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
 
     async def disconnect(self) -> None:
         await self._engine.dispose()
@@ -32,3 +40,6 @@ class Database:
     async def get_session(self) -> AsyncGenerator[AsyncSession, None]:
         async with self._session_factory() as session:
             yield session
+
+
+database = Database()

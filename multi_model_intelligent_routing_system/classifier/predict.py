@@ -1,14 +1,14 @@
 import joblib
 import pandas as pd
 
-from classifier.feature_extractor import FeatureExtractor
+from multi_model_intelligent_routing_system.classifier.feature_extractor import FeatureExtractor
 
 
 class PromptClassifier:
 
     def __init__(self):
         self.model = joblib.load(
-            "classifier/classifier.pkl"
+            "multi_model_intelligent_routing_system/classifier/classifier.pkl"
         )
 
         self.extractor = FeatureExtractor()

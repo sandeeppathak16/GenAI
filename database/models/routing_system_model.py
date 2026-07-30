@@ -27,20 +27,57 @@ class RequestLog(Base):
 class Evaluation(Base):
     __tablename__ = "evaluations"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     request_id: Mapped[int] = mapped_column(
-        ForeignKey("request_logs.id")
+        ForeignKey("request_logs.id"),
+        nullable=False,
+        index=True,
     )
-    reference_model: Mapped[str] = mapped_column(String(100))
-    reference_response: Mapped[str] = mapped_column(Text)
-    judge_model: Mapped[str] = mapped_column(String(100))
-    winner: Mapped[str] = mapped_column(String(20))
-    score: Mapped[float] = mapped_column(Float)
-    reason: Mapped[str] = mapped_column(Text)
+    reference_model: Mapped[str] = mapped_column(
+        String(100),
+        nullable=False,
+    )
+    reference_response: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+    )
+    reference_latency_ms: Mapped[float] = mapped_column(
+        Float,
+        nullable=False,
+    )
+    reference_cost: Mapped[float] = mapped_column(
+        Float,
+        nullable=False,
+    )
+    judge_model: Mapped[str] = mapped_column(
+        String(100),
+        nullable=False,
+    )
+    judge_latency_ms: Mapped[float] = mapped_column(
+        Float,
+        nullable=False,
+    )
+    judge_cost: Mapped[float] = mapped_column(
+        Float,
+        nullable=False,
+    )
+    winner: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+    )
+    score: Mapped[float] = mapped_column(
+        Float,
+        nullable=False,
+    )
+    reason: Mapped[str] = mapped_column(
+        Text,
+        nullable=False,
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow,
+        nullable=False,
     )
     request: Mapped["RequestLog"] = relationship(
-        back_populates="evaluations"
+        back_populates="evaluations",
     )

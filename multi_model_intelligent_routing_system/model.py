@@ -40,3 +40,9 @@ class ModelResponse:
 
 class CompletionRequest(BaseModel):
     prompt: str
+
+
+class EvaluationResult(BaseModel):
+    winner: str
+    score: float
+    reason: str

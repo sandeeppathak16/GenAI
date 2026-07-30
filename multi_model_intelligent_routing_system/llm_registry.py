@@ -1,5 +1,8 @@
 from .classifier.predict import PromptClassifier
 from .model import ModelConfig, ModelProvider, QualityTier
+from logger import get_logger
+
+logger = get_logger(__name__)
 
 
 MODEL_REGISTRY = {
@@ -35,6 +38,24 @@ MODEL_REGISTRY = {
 }
 
 
+def get_highest_quality_model() -> ModelConfig:
+    return max(
+        MODEL_REGISTRY.values(),
+        key=lambda model: model.quality_tier.value,
+    )
+
+
+EVALUATION_MODEL = ModelConfig(
+    provider=ModelProvider.OPENAI,
+    display_name="GPT-4.1 Judge",
+    runtime_model="qwen3:8b",
+    input_cost_per_million_tokens=2.50,
+    output_cost_per_million_tokens=10.00,
+    average_latency_ms=2200,
+    quality_tier=QualityTier.HIGH,
+)
+
+
 class Router:
 
     def __init__(self):
@@ -42,16 +63,18 @@ class Router:
 
     def route(self, prompt: str):
         tier = self.classifier.predict(prompt)
+        logger.info(f"Prompt classifier predicted tier: '{tier}'")
 
         match tier:
             case "simple":
-                return MODEL_REGISTRY["gpt-4o-mini"]
-
+                selected = MODEL_REGISTRY["gpt-4o-mini"]
             case "moderate":
-                return MODEL_REGISTRY["llama3"]
-
+                selected = MODEL_REGISTRY["llama3"]
             case "complex":
-                return MODEL_REGISTRY["gpt-4o"]
-
+                selected = MODEL_REGISTRY["gpt-4o"]
             case _:
+                logger.error(f"Classification returned unknown tier: '{tier}'")
                 raise ValueError(f"Unknown tier: {tier}")
+
+        logger.info(f"Router mapped tier '{tier}' -> Model '{selected.display_name}' ({selected.runtime_model})")
+        return selected

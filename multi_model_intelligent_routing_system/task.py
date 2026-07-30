@@ -69,3 +69,25 @@ async def _retry_pending_evaluations() -> None:
                     "Failed evaluation for request %s",
                     request.id,
                 )
+
+
+@celery.task(name="retrain_classifier")
+def retrain_classifier() -> None:
+    logger.info("Starting daily classifier retraining...")
+
+    try:
+        asyncio.run(_retrain())
+        logger.info("Classifier retraining completed successfully.")
+    except Exception:
+        logger.exception("Classifier retraining failed.")
+        raise
+
+
+async def _retrain() -> None:
+    await database.connect()
+
+    try:
+        from .classifier.train import train
+        await train()
+    finally:
+        await database.disconnect()

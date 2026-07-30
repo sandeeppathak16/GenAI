@@ -1,51 +1,48 @@
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report
-from sklearn.model_selection import train_test_split
-
-from dataset import DatasetBuilder
-
-import joblib
-
 from pathlib import Path
 
+from .dataset import DatasetBuilder
+from .feedback_dataset_builder import FeedbackDatasetBuilder
+from .trainer import ClassifierTrainer
+
+from database.db import database
+
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
 PROMPTS_DIR = PROJECT_ROOT / "prompts"
-CLASSIFIER_DIR = PROJECT_ROOT / "classifier"
-MODEL_PATH = CLASSIFIER_DIR / "classifier.pkl"
 
-df = DatasetBuilder().build(
-    [
-        PROMPTS_DIR / "simple.yaml",
-        PROMPTS_DIR / "moderate.yaml",
-        PROMPTS_DIR / "complex.yaml",
-    ]
-)
+MODEL_DIR = PROJECT_ROOT / "classifier" / "models"
 
-X = df.drop(columns=["label"])
 
-y = df["label"]
+async def train():
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X,
-    y,
-    test_size=0.2,
-    random_state=42,
-)
+    original_dataset = DatasetBuilder().build(
+        [
+            PROMPTS_DIR / "simple.yaml",
+            PROMPTS_DIR / "moderate.yaml",
+            PROMPTS_DIR / "complex.yaml",
+        ]
+    )
 
-classifier = RandomForestClassifier(
-    random_state=42,
-)
+    async for session in database.get_session():
 
-classifier.fit(
-    X_train,
-    y_train,
-)
+        feedback_dataset = (
+            await FeedbackDatasetBuilder(
+                session,
+            ).build()
+        )
 
-predictions = classifier.predict(X_test)
+    trainer = ClassifierTrainer(MODEL_DIR)
 
-print(classification_report(y_test, predictions))
+    trainer.train(
+        datasets=[
+            original_dataset,
+            feedback_dataset,
+        ]
+    )
 
-joblib.dump(
-    classifier,
-    MODEL_PATH,
-)
+
+import asyncio
+
+if __name__ == "__main__":
+    asyncio.run(train())

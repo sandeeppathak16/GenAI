@@ -24,5 +24,9 @@ celery.conf.beat_schedule = {
     "retry-pending-evaluations": {
         "task": "retry_pending_evaluations",
         "schedule": crontab(minute="*/1"),
-    }
+    },
+    "daily-classifier-retraining": {
+        "task": "retrain_classifier",
+        "schedule": crontab(hour=2, minute=0)
+    },
 }

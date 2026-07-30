@@ -3,7 +3,7 @@ from dataclasses import asdict
 import pandas as pd
 import yaml
 
-from feature_extractor import FeatureExtractor
+from .feature_extractor import FeatureExtractor
 
 
 class DatasetBuilder:
